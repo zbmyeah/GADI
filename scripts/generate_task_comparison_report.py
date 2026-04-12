@@ -94,7 +94,11 @@ def _write_csv(path: Path, rows: list[dict], fieldnames: list[str]) -> None:
     with path.open("w", encoding="utf-8-sig", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=fieldnames)
         writer.writeheader()
-        writer.writerows(rows)
+        filtered_rows = [
+            {field: row.get(field, "") for field in fieldnames}
+            for row in rows
+        ]
+        writer.writerows(filtered_rows)
 
 
 def build_markdown(
