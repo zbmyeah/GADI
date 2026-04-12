@@ -1,0 +1,150 @@
+{
+  "method": "LoRA",
+  "seed": 42,
+  "metrics": {
+    "loss": 0.4289160540290907,
+    "accuracy": 0.7818627450980392,
+    "train_history": [
+      {
+        "step": 20,
+        "train_loss": 0.6592880249023437
+      },
+      {
+        "step": 40,
+        "train_loss": 0.6048690795898437
+      },
+      {
+        "step": 60,
+        "train_loss": 0.658282470703125
+      },
+      {
+        "step": 80,
+        "train_loss": 0.612384033203125
+      },
+      {
+        "step": 100,
+        "train_loss": 0.655511474609375
+      },
+      {
+        "step": 120,
+        "train_loss": 0.614306640625
+      },
+      {
+        "step": 140,
+        "train_loss": 0.6061126708984375
+      },
+      {
+        "step": 160,
+        "train_loss": 0.5562530517578125
+      },
+      {
+        "step": 180,
+        "train_loss": 0.5871437072753907
+      },
+      {
+        "step": 200,
+        "train_loss": 0.5491058349609375
+      },
+      {
+        "step": 220,
+        "train_loss": 0.5018310546875
+      }
+    ],
+    "eval_history": [
+      {
+        "step": 40,
+        "loss": 0.6235924082643846,
+        "accuracy": 0.6838235294117647
+      },
+      {
+        "step": 80,
+        "loss": 0.6196663297858893,
+        "accuracy": 0.6838235294117647
+      },
+      {
+        "step": 120,
+        "loss": 0.6096766976749196,
+        "accuracy": 0.6838235294117647
+      },
+      {
+        "step": 160,
+        "loss": 0.539763810003505,
+        "accuracy": 0.7083333333333334
+      },
+      {
+        "step": 200,
+        "loss": 0.49463412340949564,
+        "accuracy": 0.7573529411764706
+      }
+    ],
+    "total_steps": 230,
+    "method_artifacts": {}
+  },
+  "elapsed_seconds": 26.296001400998648,
+  "config": {
+    "seed": 42,
+    "method": "lora",
+    "model": {
+      "model_name_or_path": "roberta-base",
+      "task_type": "SEQ_CLS",
+      "num_labels": 2,
+      "target_modules": [
+        "query",
+        "value"
+      ],
+      "torch_dtype": null
+    },
+    "data": {
+      "dataset_name": "glue",
+      "dataset_config_name": "mrpc",
+      "max_length": 128,
+      "calibration_size": 32
+    },
+    "lora": {
+      "rank": 8,
+      "alpha": 16,
+      "dropout": 0.0,
+      "bias": "none",
+      "use_rslora": false,
+      "adapter_name": "default"
+    },
+    "lora_ga": {
+      "gamma": 16.0,
+      "calibration_batches": 1
+    },
+    "rebase": {
+      "enabled": false,
+      "interval_steps": 200,
+      "warmup_steps": 0,
+      "max_rebases": null,
+      "drift_threshold": 0.15,
+      "topk_layers": 2,
+      "selection_strategy": "global_topk",
+      "calibration_batches": 1,
+      "use_residual_gradient": true,
+      "gradient_mix": 0.7,
+      "calibration_eval_mode": true,
+      "reset_optimizer_state": false
+    },
+    "optimizer": {
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0
+    },
+    "training": {
+      "output_dir": "results/2026-04-12/roberta-base_MRPC_LoRA多随机种子验证_A10/lora_seed_42_152442/模型权重",
+      "train_batch_size": 16,
+      "eval_batch_size": 32,
+      "dataloader_num_workers": 0,
+      "pin_memory": true,
+      "persistent_workers": false,
+      "gradient_accumulation_steps": 1,
+      "num_epochs": 1,
+      "max_steps": null,
+      "log_every_steps": 20,
+      "eval_every_steps": 40,
+      "use_amp": true,
+      "amp_dtype": "bfloat16",
+      "allow_tf32": true
+    }
+  }
+}
