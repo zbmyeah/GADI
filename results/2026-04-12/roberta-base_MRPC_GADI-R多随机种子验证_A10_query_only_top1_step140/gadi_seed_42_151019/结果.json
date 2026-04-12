@@ -1,0 +1,234 @@
+{
+  "method": "GADI-R",
+  "seed": 42,
+  "metrics": {
+    "loss": 0.367389253541535,
+    "accuracy": 0.8259803921568627,
+    "train_history": [
+      {
+        "step": 10,
+        "train_loss": 0.69468994140625
+      },
+      {
+        "step": 20,
+        "train_loss": 0.626275634765625
+      },
+      {
+        "step": 30,
+        "train_loss": 0.63968505859375
+      },
+      {
+        "step": 40,
+        "train_loss": 0.5900146484375
+      },
+      {
+        "step": 50,
+        "train_loss": 0.6439453125
+      },
+      {
+        "step": 60,
+        "train_loss": 0.66265869140625
+      },
+      {
+        "step": 70,
+        "train_loss": 0.62921142578125
+      },
+      {
+        "step": 80,
+        "train_loss": 0.569696044921875
+      },
+      {
+        "step": 90,
+        "train_loss": 0.6097412109375
+      },
+      {
+        "step": 100,
+        "train_loss": 0.6296142578125
+      },
+      {
+        "step": 110,
+        "train_loss": 0.542431640625
+      },
+      {
+        "step": 120,
+        "train_loss": 0.53818359375
+      },
+      {
+        "step": 130,
+        "train_loss": 0.47289276123046875
+      },
+      {
+        "step": 140,
+        "train_loss": 0.5002700805664062
+      },
+      {
+        "step": 150,
+        "train_loss": 0.45124130249023436
+      },
+      {
+        "step": 160,
+        "train_loss": 0.48116321563720704
+      },
+      {
+        "step": 170,
+        "train_loss": 0.4418205261230469
+      },
+      {
+        "step": 180,
+        "train_loss": 0.5297378540039063
+      },
+      {
+        "step": 190,
+        "train_loss": 0.5156436920166015
+      },
+      {
+        "step": 200,
+        "train_loss": 0.434661865234375
+      },
+      {
+        "step": 210,
+        "train_loss": 0.4100669860839844
+      },
+      {
+        "step": 220,
+        "train_loss": 0.4663890838623047
+      },
+      {
+        "step": 230,
+        "train_loss": 0.4172798156738281
+      }
+    ],
+    "eval_history": [
+      {
+        "step": 40,
+        "loss": 0.6224068298059351,
+        "accuracy": 0.6838235294117647
+      },
+      {
+        "step": 80,
+        "loss": 0.6150393819107729,
+        "accuracy": 0.6838235294117647
+      },
+      {
+        "step": 120,
+        "loss": 0.49854039619950685,
+        "accuracy": 0.7156862745098039
+      },
+      {
+        "step": 160,
+        "loss": 0.4728011272701563,
+        "accuracy": 0.75
+      },
+      {
+        "step": 200,
+        "loss": 0.42083991041370467,
+        "accuracy": 0.7916666666666666
+      }
+    ],
+    "total_steps": 230,
+    "method_artifacts": {
+      "rebase_history": [
+        {
+          "step": 140,
+          "refreshed_layers": [
+            "base_model.model.roberta.encoder.layer.0.attention.self.query"
+          ],
+          "scores": {
+            "base_model.model.roberta.encoder.layer.0.attention.self.query": 0.7069461941719055,
+            "base_model.model.roberta.encoder.layer.0.attention.self.value": 0.5427154302597046,
+            "base_model.model.roberta.encoder.layer.1.attention.self.query": 0.5906387567520142,
+            "base_model.model.roberta.encoder.layer.1.attention.self.value": 0.2650728225708008,
+            "base_model.model.roberta.encoder.layer.2.attention.self.query": 0.4412931799888611,
+            "base_model.model.roberta.encoder.layer.2.attention.self.value": 0.20216737687587738,
+            "base_model.model.roberta.encoder.layer.3.attention.self.query": 0.4279983341693878,
+            "base_model.model.roberta.encoder.layer.3.attention.self.value": 0.20935378968715668,
+            "base_model.model.roberta.encoder.layer.4.attention.self.query": 0.35709112882614136,
+            "base_model.model.roberta.encoder.layer.4.attention.self.value": 0.1993974894285202,
+            "base_model.model.roberta.encoder.layer.5.attention.self.query": 0.3455565273761749,
+            "base_model.model.roberta.encoder.layer.5.attention.self.value": 0.22092270851135254,
+            "base_model.model.roberta.encoder.layer.6.attention.self.query": 0.42055565118789673,
+            "base_model.model.roberta.encoder.layer.6.attention.self.value": 0.1949026733636856,
+            "base_model.model.roberta.encoder.layer.7.attention.self.query": 0.3303740620613098,
+            "base_model.model.roberta.encoder.layer.7.attention.self.value": 0.2642839848995209,
+            "base_model.model.roberta.encoder.layer.8.attention.self.query": 0.3821093738079071,
+            "base_model.model.roberta.encoder.layer.8.attention.self.value": 0.23439303040504456,
+            "base_model.model.roberta.encoder.layer.9.attention.self.query": 0.4277897775173187,
+            "base_model.model.roberta.encoder.layer.9.attention.self.value": 0.4279298782348633,
+            "base_model.model.roberta.encoder.layer.10.attention.self.query": 0.525105357170105,
+            "base_model.model.roberta.encoder.layer.10.attention.self.value": 0.3443480432033539,
+            "base_model.model.roberta.encoder.layer.11.attention.self.query": 0.14192552864551544,
+            "base_model.model.roberta.encoder.layer.11.attention.self.value": 0.39606422185897827
+          }
+        }
+      ],
+      "rebase_count": 1
+    }
+  },
+  "elapsed_seconds": 76.11971288699897,
+  "config": {
+    "seed": 42,
+    "method": "gadi_r",
+    "model": {
+      "model_name_or_path": "roberta-base",
+      "task_type": "SEQ_CLS",
+      "num_labels": 2,
+      "target_modules": [
+        "query",
+        "value"
+      ],
+      "torch_dtype": null
+    },
+    "data": {
+      "dataset_name": "glue",
+      "dataset_config_name": "mrpc",
+      "max_length": 128,
+      "calibration_size": 32
+    },
+    "lora": {
+      "rank": 8,
+      "alpha": 16,
+      "dropout": 0.0,
+      "bias": "none",
+      "use_rslora": false,
+      "adapter_name": "default"
+    },
+    "lora_ga": {
+      "gamma": 16.0,
+      "calibration_batches": 1
+    },
+    "rebase": {
+      "enabled": true,
+      "interval_steps": 140,
+      "warmup_steps": 140,
+      "max_rebases": 1,
+      "drift_threshold": 0.03,
+      "topk_layers": 1,
+      "selection_strategy": "query_only",
+      "calibration_batches": 8,
+      "use_residual_gradient": true,
+      "gradient_mix": 0.5,
+      "calibration_eval_mode": true,
+      "reset_optimizer_state": false
+    },
+    "optimizer": {
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0
+    },
+    "training": {
+      "output_dir": "/mnt/workspace/GADI/results/2026-04-12/roberta-base_MRPC_GADI-R多随机种子验证_A10_query_only_top1_step140/gadi_seed_42_151019/模型权重",
+      "train_batch_size": 16,
+      "eval_batch_size": 64,
+      "dataloader_num_workers": 0,
+      "pin_memory": true,
+      "persistent_workers": false,
+      "gradient_accumulation_steps": 1,
+      "num_epochs": 1,
+      "max_steps": null,
+      "log_every_steps": 10,
+      "eval_every_steps": 40,
+      "use_amp": true,
+      "amp_dtype": "bfloat16",
+      "allow_tf32": true
+    }
+  }
+}

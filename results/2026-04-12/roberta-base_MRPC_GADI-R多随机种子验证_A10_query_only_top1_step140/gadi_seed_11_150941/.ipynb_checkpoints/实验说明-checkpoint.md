@@ -1,0 +1,47 @@
+﻿# 实验说明
+
+## 一、实验目的
+
+本实验用于验证固定配置 `step140 + gradient_mix=0.5 + query_only` 的 GADI-R 在不同随机种子下是否稳定，并观察它相对当前 LoRA / LoRA-GA 参考基线是否仍有优势。
+
+## 二、实验配置
+
+- 实验方法：GADI-R
+- 随机种子：11
+- 模型：roberta-base
+- 数据集：glue/mrpc
+- LoRA Rank：8
+- LoRA Alpha：16
+- 训练轮数：1
+- 训练批大小：16
+- 重基化步数：140
+- 选择策略：query_only
+- topk_layers：1
+- gradient_mix：0.5
+- 校准 batch 数：8
+
+## 三、实验结果
+
+- 最终验证集 Loss：0.390970
+- 最终验证集 Accuracy：0.835784
+- 训练过程最好验证集 Loss：0.410827
+- 训练过程最好验证集 Accuracy：0.813725
+- 最好结果出现步数：200
+- 相对 LoRA 参考基线 Accuracy 差值：+0.053922
+- 相对 LoRA-GA 参考基线 Accuracy 差值：+0.024510
+- 总耗时（秒）：37.62
+
+## 四、重基化记录
+
+- step 140: base_model.model.roberta.encoder.layer.0.attention.self.query
+
+是否有 value 层进入 top-k：否
+
+本次被刷新的层：base_model.model.roberta.encoder.layer.0.attention.self.query
+
+## 五、结果文件说明
+
+- 当前实验目录：`/mnt/workspace/GADI/results/2026-04-12/roberta-base_MRPC_GADI-R多随机种子验证_A10_query_only_top1_step140/gadi_seed_11_150941`
+- 配置快照：`配置快照.yaml`
+- 指标结果：`结果.json`
+- 模型权重目录：`模型权重/`
