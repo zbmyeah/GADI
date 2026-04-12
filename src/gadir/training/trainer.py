@@ -3,7 +3,6 @@ from __future__ import annotations
 from contextlib import nullcontext
 import math
 import time
-from itertools import cycle
 from pathlib import Path
 
 import torch
@@ -23,11 +22,18 @@ def _move_batch_to_device(batch: dict[str, torch.Tensor], device: torch.device) 
 
 
 def _take_calibration_batches(
-    calibration_iterator,
+    calibration_batches_cpu: list[dict[str, torch.Tensor]],
+    state: dict[str, int],
     batch_count: int,
     device: torch.device,
 ) -> list[dict[str, torch.Tensor]]:
-    return [_move_batch_to_device(next(calibration_iterator), device) for _ in range(batch_count)]
+    batches: list[dict[str, torch.Tensor]] = []
+    for _ in range(batch_count):
+        index = state["index"] % len(calibration_batches_cpu)
+        cpu_batch = calibration_batches_cpu[index]
+        batches.append(_move_batch_to_device(cpu_batch, device))
+        state["index"] += 1
+    return batches
 
 
 def _resolve_total_steps(config: ExperimentConfig, train_loader_length: int) -> int:
@@ -44,6 +50,12 @@ def _resolve_amp_dtype(dtype_name: str) -> torch.dtype:
     if not isinstance(dtype, torch.dtype):
         raise ValueError(f"Unsupported AMP dtype: {dtype_name}")
     return dtype
+
+
+def _shutdown_dataloader_workers(dataloader) -> None:
+    iterator = getattr(dataloader, "_iterator", None)
+    if iterator is not None and hasattr(iterator, "_shutdown_workers"):
+        iterator._shutdown_workers()
 
 
 def run_training(config: ExperimentConfig) -> dict[str, float]:
@@ -89,9 +101,14 @@ def run_training(config: ExperimentConfig) -> dict[str, float]:
         config.training.allow_tf32 if device.type == "cuda" else False,
     )
 
-    calibration_iterator = cycle(data_bundle.calibration_loader)
+    calibration_batches_cpu = list(data_bundle.calibration_loader)
+    if not calibration_batches_cpu:
+        raise ValueError("Calibration dataloader produced no batches.")
+    calibration_state = {"index": 0}
+    logger.info("Cached %s calibration batches in host memory.", len(calibration_batches_cpu))
     calibration_batch_provider = lambda batch_count: _take_calibration_batches(
-        calibration_iterator,
+        calibration_batches_cpu,
+        calibration_state,
         batch_count,
         device,
     )
@@ -123,101 +140,106 @@ def run_training(config: ExperimentConfig) -> dict[str, float]:
     last_heartbeat = training_start
     heartbeat_seconds = 30.0
 
-    for _ in range(config.training.num_epochs):
-        model.train()
-        for batch_index, batch in enumerate(data_bundle.train_loader, start=1):
-            batch = _move_batch_to_device(batch, device)
-            autocast_context = (
-                torch.autocast(device_type=device.type, dtype=amp_dtype)
-                if amp_enabled and amp_dtype is not None
-                else nullcontext()
-            )
-            with autocast_context:
-                outputs = model(**batch)
-                loss = outputs.loss / config.training.gradient_accumulation_steps
-            if grad_scaler_enabled and scaler is not None:
-                scaler.scale(loss).backward()
-            else:
-                loss.backward()
-            current_loss = float(outputs.loss.detach())
-            running_loss += current_loss
-
-            if batch_index % config.training.gradient_accumulation_steps != 0:
-                continue
-
-            if grad_scaler_enabled and scaler is not None:
-                scaler.step(optimizer)
-                scaler.update()
-            else:
-                optimizer.step()
-            optimizer.zero_grad(set_to_none=True)
-            global_step += 1
-
-            method.after_optimizer_step(
-                model=model,
-                optimizer=optimizer,
-                global_step=global_step,
-                calibration_batch_provider=calibration_batch_provider,
-                device=device,
-            )
-
-            elapsed = time.perf_counter() - training_start
-            if global_step == 1 or time.perf_counter() - last_heartbeat >= heartbeat_seconds:
-                logger.info(
-                    "heartbeat step=%s/%s | latest_loss=%.4f | elapsed=%.1fs",
-                    global_step,
-                    total_steps,
-                    current_loss,
-                    elapsed,
+    try:
+        for _ in range(config.training.num_epochs):
+            model.train()
+            for batch_index, batch in enumerate(data_bundle.train_loader, start=1):
+                batch = _move_batch_to_device(batch, device)
+                autocast_context = (
+                    torch.autocast(device_type=device.type, dtype=amp_dtype)
+                    if amp_enabled and amp_dtype is not None
+                    else nullcontext()
                 )
-                last_heartbeat = time.perf_counter()
+                with autocast_context:
+                    outputs = model(**batch)
+                    loss = outputs.loss / config.training.gradient_accumulation_steps
+                if grad_scaler_enabled and scaler is not None:
+                    scaler.scale(loss).backward()
+                else:
+                    loss.backward()
+                current_loss = float(outputs.loss.detach())
+                running_loss += current_loss
 
-            if global_step % config.training.log_every_steps == 0:
-                average_train_loss = running_loss / config.training.log_every_steps
-                logger.info(
-                    "step=%s/%s | train_loss=%.4f",
-                    global_step,
-                    total_steps,
-                    average_train_loss,
-                )
-                train_history.append(
-                    {
-                        "step": global_step,
-                        "train_loss": average_train_loss,
-                    }
-                )
-                running_loss = 0.0
+                if batch_index % config.training.gradient_accumulation_steps != 0:
+                    continue
 
-            if global_step % config.training.eval_every_steps == 0:
-                logger.info("Starting evaluation at step=%s...", global_step)
-                metrics = evaluate_sequence_classification(model, data_bundle.eval_loader, device)
-                logger.info("Completed evaluation at step=%s | eval=%s", global_step, metrics)
-                eval_history.append(
-                    {
-                        "step": global_step,
-                        **metrics,
-                    }
+                if grad_scaler_enabled and scaler is not None:
+                    scaler.step(optimizer)
+                    scaler.update()
+                else:
+                    optimizer.step()
+                optimizer.zero_grad(set_to_none=True)
+                global_step += 1
+
+                method.after_optimizer_step(
+                    model=model,
+                    optimizer=optimizer,
+                    global_step=global_step,
+                    calibration_batch_provider=calibration_batch_provider,
+                    device=device,
                 )
 
+                elapsed = time.perf_counter() - training_start
+                if global_step == 1 or time.perf_counter() - last_heartbeat >= heartbeat_seconds:
+                    logger.info(
+                        "heartbeat step=%s/%s | latest_loss=%.4f | elapsed=%.1fs",
+                        global_step,
+                        total_steps,
+                        current_loss,
+                        elapsed,
+                    )
+                    last_heartbeat = time.perf_counter()
+
+                if global_step % config.training.log_every_steps == 0:
+                    average_train_loss = running_loss / config.training.log_every_steps
+                    logger.info(
+                        "step=%s/%s | train_loss=%.4f",
+                        global_step,
+                        total_steps,
+                        average_train_loss,
+                    )
+                    train_history.append(
+                        {
+                            "step": global_step,
+                            "train_loss": average_train_loss,
+                        }
+                    )
+                    running_loss = 0.0
+
+                if global_step % config.training.eval_every_steps == 0:
+                    logger.info("Starting evaluation at step=%s...", global_step)
+                    metrics = evaluate_sequence_classification(model, data_bundle.eval_loader, device)
+                    logger.info("Completed evaluation at step=%s | eval=%s", global_step, metrics)
+                    eval_history.append(
+                        {
+                            "step": global_step,
+                            **metrics,
+                        }
+                    )
+
+                if global_step >= total_steps:
+                    break
             if global_step >= total_steps:
                 break
-        if global_step >= total_steps:
-            break
 
-    logger.info("Starting final evaluation...")
-    final_metrics = evaluate_sequence_classification(model, data_bundle.eval_loader, device)
-    logger.info("final_eval=%s", final_metrics)
+        logger.info("Starting final evaluation...")
+        final_metrics = evaluate_sequence_classification(model, data_bundle.eval_loader, device)
+        logger.info("final_eval=%s", final_metrics)
 
-    output_dir = Path(config.training.output_dir)
-    output_dir.mkdir(parents=True, exist_ok=True)
-    logger.info("Saving model artifacts to %s...", output_dir)
-    model.save_pretrained(output_dir)
-    tokenizer.save_pretrained(output_dir)
-    logger.info("Saved model artifacts to %s", output_dir)
-    return {
-        **final_metrics,
-        "train_history": train_history,
-        "eval_history": eval_history,
-        "total_steps": total_steps,
-        "method_artifacts": method.get_artifacts(),
-    }
+        output_dir = Path(config.training.output_dir)
+        output_dir.mkdir(parents=True, exist_ok=True)
+        logger.info("Saving model artifacts to %s...", output_dir)
+        model.save_pretrained(output_dir)
+        tokenizer.save_pretrained(output_dir)
+        logger.info("Saved model artifacts to %s", output_dir)
+        return {
+            **final_metrics,
+            "train_history": train_history,
+            "eval_history": eval_history,
+            "total_steps": total_steps,
+            "method_artifacts": method.get_artifacts(),
+        }
+    finally:
+        _shutdown_dataloader_workers(data_bundle.train_loader)
+        _shutdown_dataloader_workers(data_bundle.eval_loader)
+        _shutdown_dataloader_workers(data_bundle.calibration_loader)

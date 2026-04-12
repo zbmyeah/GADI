@@ -1,0 +1,4 @@
+﻿gradient_mix,final_loss,final_accuracy,best_loss,best_accuracy,best_step,value_selected,elapsed_seconds,run_dir
+0.5,0.384504953435823,0.8161764705882353,0.44763219765588347,0.7867647058823529,200,False,1006.4935190999531,D:\loRA-GA-Project\results\2026-04-04\roberta-base_MRPC_GADI-R_gradient_mix消融实验\gadi_r_mix_05_153037
+0.7,0.3998414348153507,0.803921568627451,0.4660063561271219,0.7990196078431373,200,False,1034.4493161000428,D:\loRA-GA-Project\results\2026-04-04\roberta-base_MRPC_GADI-R_gradient_mix消融实验\gadi_r_mix_07_154723
+0.9,0.401978790175681,0.8014705882352942,0.46566952735769984,0.7990196078431373,200,False,955.8161332999589,D:\loRA-GA-Project\results\2026-04-04\roberta-base_MRPC_GADI-R_gradient_mix消融实验\gadi_r_mix_09_160438
