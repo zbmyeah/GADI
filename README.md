@@ -72,6 +72,19 @@ Or run both sequentially:
 bash scripts/run_aliyun_gadir_query_only_top1_followups.sh
 ```
 
+For fair multi-seed baseline reruns on the same A10 server:
+
+```bash
+bash scripts/run_aliyun_lora_seed_validation.sh
+bash scripts/run_aliyun_lora_ga_seed_validation.sh
+```
+
+Or run both baselines sequentially:
+
+```bash
+bash scripts/run_aliyun_baseline_seed_validations.sh
+```
+
 The helper script sets `PYTHONPATH`, a local Hugging Face cache directory, and runs the fixed best-known GADI-R setting:
 
 - `step120`
