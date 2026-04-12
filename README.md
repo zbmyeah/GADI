@@ -59,6 +59,19 @@ For a query-only re-basing ablation on the same A10 server:
 bash scripts/run_aliyun_gadir_query_only_seed_validation.sh
 ```
 
+For the next recommended stabilizing follow-ups:
+
+```bash
+bash scripts/run_aliyun_gadir_query_only_top1_step120_seed_validation.sh
+bash scripts/run_aliyun_gadir_query_only_top1_step140_seed_validation.sh
+```
+
+Or run both sequentially:
+
+```bash
+bash scripts/run_aliyun_gadir_query_only_top1_followups.sh
+```
+
 The helper script sets `PYTHONPATH`, a local Hugging Face cache directory, and runs the fixed best-known GADI-R setting:
 
 - `step120`
