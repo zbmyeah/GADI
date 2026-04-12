@@ -69,15 +69,18 @@ def build_seed_config(
     base_config: ExperimentConfig,
     *,
     seed: int,
-    num_epochs: int,
-    train_batch_size: int,
+    num_epochs: int | None,
+    train_batch_size: int | None,
 ) -> ExperimentConfig:
     cfg = copy.deepcopy(base_config)
     cfg.seed = seed
     cfg.method = "gadi_r"
-    cfg.training.num_epochs = num_epochs
     cfg.training.max_steps = None
-    cfg.training.train_batch_size = train_batch_size
+    if num_epochs is not None:
+        cfg.training.num_epochs = num_epochs
+    if train_batch_size is not None:
+        cfg.training.train_batch_size = train_batch_size
+        cfg.data.calibration_size = max(train_batch_size, cfg.data.calibration_size)
     return cfg
 
 
@@ -106,8 +109,19 @@ def summarize_rebase(metrics: dict[str, Any]) -> tuple[str, bool, list[str]]:
         refreshed_layers.extend(current_layers)
         if any("value" in layer for layer in current_layers):
             value_selected = True
-        lines.append(f"- step {item.get('step')}: {', '.join(current_layers) if current_layers else '无层被刷新'}")
+        duration = float(item.get("duration_seconds", 0.0))
+        lines.append(
+            f"- step {item.get('step')}: {', '.join(current_layers) if current_layers else '无层被刷新'} | 耗时 {duration:.2f}s"
+        )
     return "\n".join(lines), value_selected, refreshed_layers
+
+
+def _mean(values: list[float]) -> float:
+    return statistics.mean(values) if values else 0.0
+
+
+def _std(values: list[float]) -> float:
+    return statistics.stdev(values) if len(values) > 1 else 0.0
 
 
 def build_experiment_markdown(
@@ -122,46 +136,49 @@ def build_experiment_markdown(
     final_accuracy = float(metrics.get("accuracy", 0.0))
     lora_delta = final_accuracy - reference_metrics["lora_accuracy"]
     lora_ga_delta = final_accuracy - reference_metrics["lora_ga_accuracy"]
+    runtime = metrics.get("runtime", {})
     return f"""# 实验说明
 
 ## 一、实验目的
 
-本实验用于验证固定配置 `step{config.rebase.interval_steps} + gradient_mix={config.rebase.gradient_mix} + {config.rebase.selection_strategy}` 的 GADI-R 在不同随机种子下是否稳定，并观察它相对当前 LoRA / LoRA-GA 参考基线是否仍有优势。
+本实验用于验证固定配置 `step{config.rebase.interval_steps} + gradient_mix={config.rebase.gradient_mix} + {config.rebase.selection_strategy} + topk_layers={config.rebase.topk_layers}` 的 GADI-R 在 `{config.data.dataset_config_name.upper()}` 任务上的表现是否稳定，并观察其相对 LoRA / LoRA-GA 是否仍有优势。
 
 ## 二、实验配置
 
-- 实验方法：GADI-R
-- 随机种子：{config.seed}
-- 模型：{config.model.model_name_or_path}
-- 数据集：{config.data.dataset_name}/{config.data.dataset_config_name}
-- LoRA Rank：{config.lora.rank}
-- LoRA Alpha：{config.lora.alpha}
-- 训练轮数：{config.training.num_epochs}
-- 训练批大小：{config.training.train_batch_size}
-- 重基化步数：{config.rebase.interval_steps}
-- 选择策略：{config.rebase.selection_strategy}
-- topk_layers：{config.rebase.topk_layers}
-- gradient_mix：{config.rebase.gradient_mix}
-- 校准 batch 数：{config.rebase.calibration_batches}
+- 方法：`GADI-R`
+- 随机种子：`{config.seed}`
+- 模型：`{config.model.model_name_or_path}`
+- 数据集：`{config.data.dataset_name}/{config.data.dataset_config_name}`
+- LoRA Rank：`{config.lora.rank}`
+- LoRA Alpha：`{config.lora.alpha}`
+- 训练轮数：`{config.training.num_epochs}`
+- 训练 batch size：`{config.training.train_batch_size}`
+- 重基化步数：`{config.rebase.interval_steps}`
+- 选择策略：`{config.rebase.selection_strategy}`
+- topk_layers：`{config.rebase.topk_layers}`
+- gradient_mix：`{config.rebase.gradient_mix}`
+- 校准 batch 数：`{config.rebase.calibration_batches}`
 
 ## 三、实验结果
 
-- 最终验证集 Loss：{float(metrics.get("loss", 0.0)):.6f}
-- 最终验证集 Accuracy：{final_accuracy:.6f}
-- 训练过程最好验证集 Loss：{best_loss:.6f}
-- 训练过程最好验证集 Accuracy：{best_accuracy:.6f}
-- 最好结果出现步数：{best_step}
-- 相对 LoRA 参考基线 Accuracy 差值：{lora_delta:+.6f}
-- 相对 LoRA-GA 参考基线 Accuracy 差值：{lora_ga_delta:+.6f}
-- 总耗时（秒）：{elapsed_seconds:.2f}
+- 最终验证集 Loss：`{float(metrics.get("loss", 0.0)):.6f}`
+- 最终验证集 Accuracy：`{final_accuracy:.6f}`
+- 训练过程中最佳验证集 Loss：`{best_loss:.6f}`
+- 训练过程中最佳验证集 Accuracy：`{best_accuracy:.6f}`
+- 最佳结果出现步数：`{best_step}`
+- 相对 LoRA 参考基线 Accuracy 差值：`{lora_delta:+.6f}`
+- 相对 LoRA-GA 参考基线 Accuracy 差值：`{lora_ga_delta:+.6f}`
+- 总运行时间（秒）：`{elapsed_seconds:.2f}`
+- 额外初始化时间（秒）：`{float(runtime.get('method_initialization_time_seconds', 0.0)):.2f}`
+- 重基化额外耗时（秒）：`{float(runtime.get('rebase_overhead_time_seconds', 0.0)):.2f}`
+- 峰值显存（MiB）：`{float(runtime.get('peak_memory_allocated_mb', 0.0)):.2f}`
 
 ## 四、重基化记录
 
 {rebase_desc}
 
-是否有 value 层进入 top-k：{"是" if value_selected else "否"}
-
-本次被刷新的层：{"；".join(refreshed_layers) if refreshed_layers else "无"}
+- 是否有 value 层进入 top-k：`{'是' if value_selected else '否'}`
+- 本次刷新的层：`{'；'.join(refreshed_layers) if refreshed_layers else '无'}`
 
 ## 五、结果文件说明
 
@@ -170,14 +187,6 @@ def build_experiment_markdown(
 - 指标结果：`结果.json`
 - 模型权重目录：`模型权重/`
 """
-
-
-def _mean(values: list[float]) -> float:
-    return statistics.mean(values) if values else 0.0
-
-
-def _std(values: list[float]) -> float:
-    return statistics.stdev(values) if len(values) > 1 else 0.0
 
 
 def build_summary_markdown(
@@ -189,6 +198,10 @@ def build_summary_markdown(
 ) -> str:
     accuracies = [row["final_accuracy"] for row in summary_rows]
     losses = [row["final_loss"] for row in summary_rows]
+    total_times = [row["total_wall_time_seconds"] for row in summary_rows]
+    init_times = [row["initialization_time_seconds"] for row in summary_rows]
+    rebase_times = [row["rebase_overhead_time_seconds"] for row in summary_rows]
+    peak_memories = [row["peak_memory_allocated_mb"] for row in summary_rows]
     lora_acc = reference_rows["lora"]["final_accuracy"]
     lora_ga_acc = reference_rows["lora_ga"]["final_accuracy"]
 
@@ -202,9 +215,9 @@ def build_summary_markdown(
         "",
         "## 一、实验设置",
         "",
-        f"- 固定配置：`step{config.rebase.interval_steps} + gradient_mix={config.rebase.gradient_mix} + {config.rebase.selection_strategy} + topk_layers={config.rebase.topk_layers}`。",
-        "- 模型：`roberta-base`",
-        "- 数据集：`GLUE/MRPC`",
+        f"- 固定配置：`step{config.rebase.interval_steps} + gradient_mix={config.rebase.gradient_mix} + {config.rebase.selection_strategy} + topk_layers={config.rebase.topk_layers}`",
+        f"- 模型：`{config.model.model_name_or_path}`",
+        f"- 数据集：`{config.data.dataset_name}/{config.data.dataset_config_name}`",
         f"- 随机种子列表：`{', '.join(str(seed) for seed in seeds)}`",
         "- 已存在的相同配置结果会直接复用，不重复训练。",
         "",
@@ -212,16 +225,15 @@ def build_summary_markdown(
         "",
         f"- LoRA 参考基线最终 Accuracy：`{lora_acc:.6f}`，路径：`{reference_rows['lora']['path']}`",
         f"- LoRA-GA 参考基线最终 Accuracy：`{lora_ga_acc:.6f}`，路径：`{reference_rows['lora_ga']['path']}`",
-        "- 说明：当前参考基线来自已完成的 `seed=42` 实验，因此这里的结论主要用于判断 GADI 配置本身的稳定性和超越潜力。",
         "",
         "## 三、逐种子结果",
         "",
-        "| seed | 是否复用 | 最终 Accuracy | 最终 Loss | 最佳 Accuracy | 最佳步数 | 是否超过 LoRA | 是否超过 LoRA-GA | value 是否入选 | 刷新层 |",
-        "| ---: | --- | ---: | ---: | ---: | ---: | --- | --- | --- | --- |",
+        "| seed | 是否复用 | 最终 Accuracy | 最终 Loss | 最佳 Accuracy | 最佳步数 | 是否超过 LoRA | 是否超过 LoRA-GA | value 是否入选 | 总时间(s) | 初始化(s) | 重基化(s) | 峰值显存(MiB) | 刷新层 |",
+        "| ---: | --- | ---: | ---: | ---: | ---: | --- | --- | --- | ---: | ---: | ---: | ---: | --- |",
     ]
     for row in summary_rows:
         lines.append(
-            f"| {row['seed']} | {'是' if row['reused'] else '否'} | {row['final_accuracy']:.6f} | {row['final_loss']:.6f} | {row['best_accuracy']:.6f} | {row['best_step']} | {'是' if row['final_accuracy'] > lora_acc else '否'} | {'是' if row['final_accuracy'] > lora_ga_acc else '否'} | {'是' if row['value_selected'] else '否'} | {row['refreshed_layers_text']} |"
+            f"| {row['seed']} | {'是' if row['reused'] else '否'} | {row['final_accuracy']:.6f} | {row['final_loss']:.6f} | {row['best_accuracy']:.6f} | {row['best_step']} | {'是' if row['final_accuracy'] > lora_acc else '否'} | {'是' if row['final_accuracy'] > lora_ga_acc else '否'} | {'是' if row['value_selected'] else '否'} | {row['total_wall_time_seconds']:.2f} | {row['initialization_time_seconds']:.2f} | {row['rebase_overhead_time_seconds']:.2f} | {row['peak_memory_allocated_mb']:.2f} | {row['refreshed_layers_text']} |"
         )
 
     lines.extend(
@@ -231,10 +243,12 @@ def build_summary_markdown(
             "",
             f"- 最终 Accuracy 均值：`{_mean(accuracies):.6f}`",
             f"- 最终 Accuracy 标准差：`{_std(accuracies):.6f}`",
-            f"- 最终 Accuracy 最小值：`{min(accuracies):.6f}`",
-            f"- 最终 Accuracy 最大值：`{max(accuracies):.6f}`",
             f"- 最终 Loss 均值：`{_mean(losses):.6f}`",
             f"- 最终 Loss 标准差：`{_std(losses):.6f}`",
+            f"- 总运行时间均值（秒）：`{_mean(total_times):.2f}`",
+            f"- 额外初始化时间均值（秒）：`{_mean(init_times):.2f}`",
+            f"- 重基化额外耗时均值（秒）：`{_mean(rebase_times):.2f}`",
+            f"- 峰值显存均值（MiB）：`{_mean(peak_memories):.2f}`",
             f"- 超过 LoRA 参考基线的种子数：`{len(beat_lora)}/{len(summary_rows)}`",
             f"- 超过 LoRA-GA 参考基线的种子数：`{len(beat_lora_ga)}/{len(summary_rows)}`",
             f"- 表现最好的种子：`{best_row['seed']}`，最终 Accuracy `{best_row['final_accuracy']:.6f}`",
@@ -247,16 +261,11 @@ def build_summary_markdown(
 
     mean_accuracy = _mean(accuracies)
     if mean_accuracy > lora_ga_acc and len(beat_lora_ga) >= max(1, len(summary_rows) // 2 + 1):
-        lines.append("- 当前固定配置在多随机种子下表现出较稳定的超越 LoRA-GA 的趋势，具有较强的继续推进价值。")
+        lines.append("- 当前固定配置在多随机种子下表现出较稳定的平均优势，说明该 GADI-R 版本已经具备超过 LoRA-GA 的潜力。")
     elif len(beat_lora_ga) >= 1:
-        lines.append("- 当前固定配置已经在部分随机种子上超过 LoRA-GA，但多种子均值或多数种子优势还不够稳定，说明它有潜力但仍需继续打磨。")
+        lines.append("- 当前固定配置已在部分随机种子上超过 LoRA-GA，但平均优势还需要结合更多任务继续确认。")
     else:
-        lines.append("- 当前固定配置尚未在多随机种子下体现出稳定超过 LoRA-GA 的能力，后续仍需继续优化。")
-
-    if len(beat_lora) == len(summary_rows):
-        lines.append("- 该配置对标准 LoRA 参考基线已经表现出明显而稳定的优势。")
-    else:
-        lines.append("- 该配置对标准 LoRA 的优势仍需结合更多种子继续确认。")
+        lines.append("- 当前固定配置尚未在多随机种子下表现出稳定超过 LoRA-GA 的能力，后续仍需继续优化。")
 
     lines.extend(
         [
@@ -278,8 +287,8 @@ def main() -> None:
         help="Path to the base experiment yaml file.",
     )
     parser.add_argument("--results-root", default=str(PROJECT_ROOT / "results"))
-    parser.add_argument("--epochs", type=int, default=1)
-    parser.add_argument("--train-batch-size", type=int, default=16)
+    parser.add_argument("--epochs", type=int, default=None)
+    parser.add_argument("--train-batch-size", type=int, default=None)
     parser.add_argument("--seeds", default="11,42,123,3407,2026")
     parser.add_argument("--lora-accuracy", type=float, default=None)
     parser.add_argument("--lora-ga-accuracy", type=float, default=None)
@@ -287,7 +296,7 @@ def main() -> None:
     parser.add_argument("--lora-ga-path", default="manual_reference")
     parser.add_argument(
         "--experiment-type",
-        default="roberta-base_MRPC_GADI-R多随机种子验证",
+        default="roberta-base_MRPC_GADI-R多随机种子验证_A10",
         help="Directory label used under results/<date>/",
     )
     args = parser.parse_args()
@@ -304,16 +313,18 @@ def main() -> None:
     )
 
     base_config = load_experiment_config(args.config)
+    expected_epochs = args.epochs if args.epochs is not None else base_config.training.num_epochs
+    expected_batch_size = args.train_batch_size if args.train_batch_size is not None else base_config.training.train_batch_size
 
     lora_ref = _find_existing_result(
         results_root,
         predicate=lambda payload: (
             payload.get("method") == "LoRA"
-            and payload.get("config", {}).get("model", {}).get("model_name_or_path") == "roberta-base"
-            and payload.get("config", {}).get("data", {}).get("dataset_name") == "glue"
-            and payload.get("config", {}).get("data", {}).get("dataset_config_name") == "mrpc"
-            and _get_training_cfg(payload).get("num_epochs") == args.epochs
-            and _get_training_cfg(payload).get("train_batch_size") == args.train_batch_size
+            and payload.get("config", {}).get("model", {}).get("model_name_or_path") == base_config.model.model_name_or_path
+            and payload.get("config", {}).get("data", {}).get("dataset_name") == base_config.data.dataset_name
+            and payload.get("config", {}).get("data", {}).get("dataset_config_name") == base_config.data.dataset_config_name
+            and _get_training_cfg(payload).get("num_epochs") == expected_epochs
+            and _get_training_cfg(payload).get("train_batch_size") == expected_batch_size
             and _get_training_cfg(payload).get("max_steps") is None
         ),
     )
@@ -321,11 +332,11 @@ def main() -> None:
         results_root,
         predicate=lambda payload: (
             payload.get("method") == "LoRA-GA"
-            and payload.get("config", {}).get("model", {}).get("model_name_or_path") == "roberta-base"
-            and payload.get("config", {}).get("data", {}).get("dataset_name") == "glue"
-            and payload.get("config", {}).get("data", {}).get("dataset_config_name") == "mrpc"
-            and _get_training_cfg(payload).get("num_epochs") == args.epochs
-            and _get_training_cfg(payload).get("train_batch_size") == args.train_batch_size
+            and payload.get("config", {}).get("model", {}).get("model_name_or_path") == base_config.model.model_name_or_path
+            and payload.get("config", {}).get("data", {}).get("dataset_name") == base_config.data.dataset_name
+            and payload.get("config", {}).get("data", {}).get("dataset_config_name") == base_config.data.dataset_config_name
+            and _get_training_cfg(payload).get("num_epochs") == expected_epochs
+            and _get_training_cfg(payload).get("train_batch_size") == expected_batch_size
             and _get_training_cfg(payload).get("max_steps") is None
         ),
     )
@@ -371,13 +382,16 @@ def main() -> None:
             predicate=lambda payload, seed=seed: (
                 payload.get("method") == "GADI-R"
                 and _get_seed(payload) == seed
+                and payload.get("config", {}).get("model", {}).get("model_name_or_path") == base_config.model.model_name_or_path
+                and payload.get("config", {}).get("data", {}).get("dataset_name") == base_config.data.dataset_name
+                and payload.get("config", {}).get("data", {}).get("dataset_config_name") == base_config.data.dataset_config_name
                 and _get_rebase_cfg(payload).get("interval_steps") == base_config.rebase.interval_steps
                 and _get_rebase_cfg(payload).get("warmup_steps") == base_config.rebase.warmup_steps
                 and _get_rebase_cfg(payload).get("topk_layers") == base_config.rebase.topk_layers
                 and _get_rebase_cfg(payload).get("selection_strategy", "global_topk") == base_config.rebase.selection_strategy
                 and _get_gradient_mix(payload) == base_config.rebase.gradient_mix
-                and _get_training_cfg(payload).get("num_epochs") == args.epochs
-                and _get_training_cfg(payload).get("train_batch_size") == args.train_batch_size
+                and _get_training_cfg(payload).get("num_epochs") == expected_epochs
+                and _get_training_cfg(payload).get("train_batch_size") == expected_batch_size
             ),
         )
 
@@ -419,15 +433,22 @@ def main() -> None:
             write_metrics_json(payload, run_dir / "结果.json")
             write_markdown(
                 run_dir / "实验说明.md",
-                build_experiment_markdown(config, metrics, elapsed_seconds, run_dir, {
-                    "lora_accuracy": reference_rows["lora"]["final_accuracy"],
-                    "lora_ga_accuracy": reference_rows["lora_ga"]["final_accuracy"],
-                }),
+                build_experiment_markdown(
+                    config,
+                    metrics,
+                    elapsed_seconds,
+                    run_dir,
+                    {
+                        "lora_accuracy": reference_rows["lora"]["final_accuracy"],
+                        "lora_ga_accuracy": reference_rows["lora_ga"]["final_accuracy"],
+                    },
+                ),
             )
             reused = False
 
         best_loss, best_accuracy, best_step = summarize_history(metrics)
         _, value_selected, refreshed_layers = summarize_rebase(metrics)
+        runtime = metrics.get("runtime", {})
         summary_rows.append(
             {
                 "seed": seed,
@@ -439,6 +460,10 @@ def main() -> None:
                 "best_step": best_step,
                 "value_selected": value_selected,
                 "elapsed_seconds": elapsed_seconds,
+                "total_wall_time_seconds": float(runtime.get("total_wall_time_seconds", elapsed_seconds)),
+                "initialization_time_seconds": float(runtime.get("method_initialization_time_seconds", 0.0)),
+                "rebase_overhead_time_seconds": float(runtime.get("rebase_overhead_time_seconds", 0.0)),
+                "peak_memory_allocated_mb": float(runtime.get("peak_memory_allocated_mb", 0.0)),
                 "refreshed_layers_text": "；".join(refreshed_layers) if refreshed_layers else "无",
                 "path": str(run_dir),
             }
@@ -466,6 +491,10 @@ def main() -> None:
                 "best_step",
                 "value_selected",
                 "elapsed_seconds",
+                "total_wall_time_seconds",
+                "initialization_time_seconds",
+                "rebase_overhead_time_seconds",
+                "peak_memory_allocated_mb",
                 "refreshed_layers_text",
                 "path",
             ],

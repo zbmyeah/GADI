@@ -74,25 +74,17 @@ def build_seed_config(
     base_config: ExperimentConfig,
     *,
     seed: int,
-    num_epochs: int,
-    train_batch_size: int,
+    num_epochs: int | None,
+    train_batch_size: int | None,
 ) -> ExperimentConfig:
     cfg = copy.deepcopy(base_config)
     cfg.seed = seed
-    cfg.training.num_epochs = num_epochs
     cfg.training.max_steps = None
-    cfg.training.train_batch_size = train_batch_size
-    cfg.training.eval_batch_size = 32
-    cfg.training.gradient_accumulation_steps = 1
-    cfg.training.log_every_steps = 20
-    cfg.training.eval_every_steps = 40
-    cfg.training.dataloader_num_workers = 0
-    cfg.training.pin_memory = True
-    cfg.training.persistent_workers = False
-    cfg.training.use_amp = True
-    cfg.training.amp_dtype = "bfloat16"
-    cfg.training.allow_tf32 = True
-    cfg.data.calibration_size = max(train_batch_size, 32)
+    if num_epochs is not None:
+        cfg.training.num_epochs = num_epochs
+    if train_batch_size is not None:
+        cfg.training.train_batch_size = train_batch_size
+        cfg.data.calibration_size = max(train_batch_size, cfg.data.calibration_size)
     return cfg
 
 
@@ -124,11 +116,12 @@ def build_experiment_markdown(
     run_dir: Path,
 ) -> str:
     best_loss, best_accuracy, best_step = summarize_history(metrics)
+    runtime = metrics.get("runtime", {})
     return f"""# 实验说明
 
 ## 一、实验目的
 
-本实验用于在阿里云 A10 环境下，对 `{method_name}` 进行多随机种子复现实验，为后续与 GADI-R 的 `mean ± std` 公平比较提供基线结果。
+本实验用于在阿里云 A10 环境下，对 `{method_name}` 在 `{config.data.dataset_config_name.upper()}` 任务上进行多随机种子复现实验，为后续与 GADI-R 的公平比较提供基线结果。
 
 ## 二、实验配置
 
@@ -152,7 +145,10 @@ def build_experiment_markdown(
 - 训练过程中最佳验证集 Loss：`{best_loss:.6f}`
 - 训练过程中最佳验证集 Accuracy：`{best_accuracy:.6f}`
 - 最佳结果出现步数：`{best_step}`
-- 总耗时（秒）：`{elapsed_seconds:.2f}`
+- 总运行时间（秒）：`{elapsed_seconds:.2f}`
+- 额外初始化时间（秒）：`{float(runtime.get('method_initialization_time_seconds', 0.0)):.2f}`
+- 重基化额外耗时（秒）：`{float(runtime.get('rebase_overhead_time_seconds', 0.0)):.2f}`
+- 峰值显存（MiB）：`{float(runtime.get('peak_memory_allocated_mb', 0.0)):.2f}`
 
 ## 四、结果文件说明
 
@@ -168,9 +164,14 @@ def build_summary_markdown(
     summary_rows: list[dict[str, Any]],
     suite_dir: Path,
     seeds: list[int],
+    config: ExperimentConfig,
 ) -> str:
     accuracies = [row["final_accuracy"] for row in summary_rows]
     losses = [row["final_loss"] for row in summary_rows]
+    total_times = [row["total_wall_time_seconds"] for row in summary_rows]
+    init_times = [row["initialization_time_seconds"] for row in summary_rows]
+    rebase_times = [row["rebase_overhead_time_seconds"] for row in summary_rows]
+    peak_memories = [row["peak_memory_allocated_mb"] for row in summary_rows]
     best_row = max(summary_rows, key=lambda item: (item["final_accuracy"], -item["final_loss"]))
     worst_row = min(summary_rows, key=lambda item: (item["final_accuracy"], -item["final_loss"]))
 
@@ -180,21 +181,21 @@ def build_summary_markdown(
         "## 一、实验设置",
         "",
         f"- 方法：`{method_name}`",
-        "- 模型：`roberta-base`",
-        "- 数据集：`GLUE/MRPC`",
+        f"- 模型：`{config.model.model_name_or_path}`",
+        f"- 数据集：`{config.data.dataset_name}/{config.data.dataset_config_name}`",
         f"- 随机种子列表：`{', '.join(str(seed) for seed in seeds)}`",
         "- 环境：`Alibaba Cloud A10`",
         "- 已存在的相同配置结果会直接复用，不重复训练。",
         "",
         "## 二、逐种子结果",
         "",
-        "| seed | 是否复用 | 最终 Accuracy | 最终 Loss | 最佳 Accuracy | 最佳步数 | 路径 |",
-        "| ---: | --- | ---: | ---: | ---: | ---: | --- |",
+        "| seed | 是否复用 | 最终 Accuracy | 最终 Loss | 最佳 Accuracy | 最佳步数 | 总时间(s) | 初始化(s) | 重基化(s) | 峰值显存(MiB) | 路径 |",
+        "| ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |",
     ]
 
     for row in summary_rows:
         lines.append(
-            f"| {row['seed']} | {'是' if row['reused'] else '否'} | {row['final_accuracy']:.6f} | {row['final_loss']:.6f} | {row['best_accuracy']:.6f} | {row['best_step']} | `{row['path']}` |"
+            f"| {row['seed']} | {'是' if row['reused'] else '否'} | {row['final_accuracy']:.6f} | {row['final_loss']:.6f} | {row['best_accuracy']:.6f} | {row['best_step']} | {row['total_wall_time_seconds']:.2f} | {row['initialization_time_seconds']:.2f} | {row['rebase_overhead_time_seconds']:.2f} | {row['peak_memory_allocated_mb']:.2f} | `{row['path']}` |"
         )
 
     lines.extend(
@@ -204,16 +205,18 @@ def build_summary_markdown(
             "",
             f"- 最终 Accuracy 均值：`{_mean(accuracies):.6f}`",
             f"- 最终 Accuracy 标准差：`{_std(accuracies):.6f}`",
-            f"- 最终 Accuracy 最小值：`{min(accuracies):.6f}`",
-            f"- 最终 Accuracy 最大值：`{max(accuracies):.6f}`",
             f"- 最终 Loss 均值：`{_mean(losses):.6f}`",
             f"- 最终 Loss 标准差：`{_std(losses):.6f}`",
+            f"- 总运行时间均值（秒）：`{_mean(total_times):.2f}`",
+            f"- 额外初始化时间均值（秒）：`{_mean(init_times):.2f}`",
+            f"- 重基化额外耗时均值（秒）：`{_mean(rebase_times):.2f}`",
+            f"- 峰值显存均值（MiB）：`{_mean(peak_memories):.2f}`",
             f"- 表现最好的种子：`{best_row['seed']}`，最终 Accuracy `{best_row['final_accuracy']:.6f}`",
             f"- 表现最差的种子：`{worst_row['seed']}`，最终 Accuracy `{worst_row['final_accuracy']:.6f}`",
             "",
             "## 四、结论",
             "",
-            f"- 当前 `{method_name}` 在阿里云 A10 上的公平复现实验已完成，可直接拿本目录中的 `mean ± std` 与 GADI-R 做横向比较。",
+            f"- 当前 `{method_name}` 在 `{config.data.dataset_config_name.upper()}` 上的 A10 公平复现实验已完成，可直接与 GADI-R 做 `mean ± std` 和开销对比。",
             "",
             "## 五、目录说明",
             "",
@@ -227,16 +230,17 @@ def build_summary_markdown(
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run multi-seed validation for LoRA or LoRA-GA baselines.")
     parser.add_argument("--method", choices=sorted(METHOD_SPECS.keys()), required=True)
+    parser.add_argument("--config", default=None, help="Optional override config path.")
     parser.add_argument("--results-root", default=str(PROJECT_ROOT / "results"))
-    parser.add_argument("--epochs", type=int, default=1)
-    parser.add_argument("--train-batch-size", type=int, default=16)
+    parser.add_argument("--epochs", type=int, default=None)
+    parser.add_argument("--train-batch-size", type=int, default=None)
     parser.add_argument("--seeds", default="11,42,123,3407,2026")
     parser.add_argument("--experiment-type", default=None)
     args = parser.parse_args()
 
     spec = METHOD_SPECS[args.method]
     method_name = spec["method_name"]
-    config_path = spec["config_path"]
+    config_path = Path(args.config) if args.config else spec["config_path"]
     experiment_type = args.experiment_type or spec["experiment_type"]
     seeds = [int(item.strip()) for item in args.seeds.split(",") if item.strip()]
     results_root = Path(args.results_root)
@@ -252,6 +256,8 @@ def main() -> None:
     )
 
     base_config = load_experiment_config(config_path)
+    expected_epochs = args.epochs if args.epochs is not None else base_config.training.num_epochs
+    expected_batch_size = args.train_batch_size if args.train_batch_size is not None else base_config.training.train_batch_size
     summary_rows: list[dict[str, Any]] = []
 
     for seed in seeds:
@@ -260,17 +266,17 @@ def main() -> None:
             predicate=lambda payload, seed=seed: (
                 payload.get("method") == method_name
                 and _get_seed(payload) == seed
-                and payload.get("config", {}).get("model", {}).get("model_name_or_path") == "roberta-base"
-                and payload.get("config", {}).get("data", {}).get("dataset_name") == "glue"
-                and payload.get("config", {}).get("data", {}).get("dataset_config_name") == "mrpc"
-                and _get_training_cfg(payload).get("num_epochs") == args.epochs
-                and _get_training_cfg(payload).get("train_batch_size") == args.train_batch_size
+                and payload.get("config", {}).get("model", {}).get("model_name_or_path") == base_config.model.model_name_or_path
+                and payload.get("config", {}).get("data", {}).get("dataset_name") == base_config.data.dataset_name
+                and payload.get("config", {}).get("data", {}).get("dataset_config_name") == base_config.data.dataset_config_name
+                and _get_training_cfg(payload).get("num_epochs") == expected_epochs
+                and _get_training_cfg(payload).get("train_batch_size") == expected_batch_size
                 and _get_training_cfg(payload).get("max_steps") is None
-                and _get_training_cfg(payload).get("use_amp") is True
-                and _get_training_cfg(payload).get("allow_tf32") is True
-                and _get_training_cfg(payload).get("pin_memory") is True
-                and _get_training_cfg(payload).get("persistent_workers") is False
-                and _get_training_cfg(payload).get("dataloader_num_workers") == 0
+                and _get_training_cfg(payload).get("use_amp") == base_config.training.use_amp
+                and _get_training_cfg(payload).get("allow_tf32") == base_config.training.allow_tf32
+                and _get_training_cfg(payload).get("pin_memory") == base_config.training.pin_memory
+                and _get_training_cfg(payload).get("persistent_workers") == base_config.training.persistent_workers
+                and _get_training_cfg(payload).get("dataloader_num_workers") == base_config.training.dataloader_num_workers
             ),
         )
 
@@ -317,6 +323,7 @@ def main() -> None:
             reused = False
 
         best_loss, best_accuracy, best_step = summarize_history(metrics)
+        runtime = metrics.get("runtime", {})
         summary_rows.append(
             {
                 "seed": seed,
@@ -327,6 +334,10 @@ def main() -> None:
                 "best_accuracy": best_accuracy,
                 "best_step": best_step,
                 "elapsed_seconds": elapsed_seconds,
+                "total_wall_time_seconds": float(runtime.get("total_wall_time_seconds", elapsed_seconds)),
+                "initialization_time_seconds": float(runtime.get("method_initialization_time_seconds", 0.0)),
+                "rebase_overhead_time_seconds": float(runtime.get("rebase_overhead_time_seconds", 0.0)),
+                "peak_memory_allocated_mb": float(runtime.get("peak_memory_allocated_mb", 0.0)),
                 "path": str(run_dir),
             }
         )
@@ -353,6 +364,10 @@ def main() -> None:
                 "best_accuracy",
                 "best_step",
                 "elapsed_seconds",
+                "total_wall_time_seconds",
+                "initialization_time_seconds",
+                "rebase_overhead_time_seconds",
+                "peak_memory_allocated_mb",
                 "path",
             ],
         )
@@ -361,7 +376,7 @@ def main() -> None:
 
     write_markdown(
         suite_dir / "对比总结.md",
-        build_summary_markdown(method_name, summary_rows, suite_dir, seeds),
+        build_summary_markdown(method_name, summary_rows, suite_dir, seeds, base_config),
     )
     LOGGER.info("Finished %s multi-seed validation. Summary directory: %s", method_name, suite_dir)
 

@@ -61,6 +61,7 @@ def _shutdown_dataloader_workers(dataloader) -> None:
 def run_training(config: ExperimentConfig) -> dict[str, float]:
     logger = get_logger("trainer")
     seed_everything(config.seed)
+    run_start = time.perf_counter()
 
     logger.info(
         "Preparing run | method=%s | seed=%s | model=%s | dataset=%s/%s",
@@ -85,6 +86,9 @@ def run_training(config: ExperimentConfig) -> dict[str, float]:
     model = method.wrap_model(model)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    if device.type == "cuda":
+        torch.cuda.empty_cache()
+        torch.cuda.reset_peak_memory_stats(device)
     model.to(device)
     logger.info("Model wrapped with method=%s and moved to device=%s.", config.method, device)
     if device.type == "cuda":
@@ -120,7 +124,9 @@ def run_training(config: ExperimentConfig) -> dict[str, float]:
         calibration_batch_provider=calibration_batch_provider,
         device=device,
     )
-    logger.info("Initialization finished in %.2f seconds.", time.perf_counter() - init_start)
+    initialization_time = time.perf_counter() - init_start
+    method.set_initialization_time(initialization_time)
+    logger.info("Initialization finished in %.2f seconds.", initialization_time)
 
     optimizer = AdamW(
         (parameter for parameter in model.parameters() if parameter.requires_grad),
@@ -232,12 +238,29 @@ def run_training(config: ExperimentConfig) -> dict[str, float]:
         model.save_pretrained(output_dir)
         tokenizer.save_pretrained(output_dir)
         logger.info("Saved model artifacts to %s", output_dir)
+        method_artifacts = method.get_artifacts()
+        peak_memory_allocated_mb = 0.0
+        peak_memory_reserved_mb = 0.0
+        if device.type == "cuda":
+            peak_memory_allocated_mb = torch.cuda.max_memory_allocated(device) / (1024 ** 2)
+            peak_memory_reserved_mb = torch.cuda.max_memory_reserved(device) / (1024 ** 2)
+        runtime = {
+            "total_wall_time_seconds": time.perf_counter() - run_start,
+            "method_initialization_time_seconds": initialization_time,
+            "rebase_overhead_time_seconds": float(
+                method_artifacts.get("profiling", {}).get("rebase_time_seconds", 0.0)
+            ),
+            "peak_memory_allocated_mb": peak_memory_allocated_mb,
+            "peak_memory_reserved_mb": peak_memory_reserved_mb,
+            "device": device.type,
+        }
         return {
             **final_metrics,
             "train_history": train_history,
             "eval_history": eval_history,
             "total_steps": total_steps,
-            "method_artifacts": method.get_artifacts(),
+            "method_artifacts": method_artifacts,
+            "runtime": runtime,
         }
     finally:
         _shutdown_dataloader_workers(data_bundle.train_loader)

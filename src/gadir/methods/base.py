@@ -16,6 +16,10 @@ class BaseAdaptationMethod(ABC):
         self.config = experiment_config
         self.adapter_name = experiment_config.lora.adapter_name
         self.logger = get_logger(self.__class__.__name__)
+        self._profiling = {
+            "initialization_time_seconds": 0.0,
+            "rebase_time_seconds": 0.0,
+        }
 
     @abstractmethod
     def wrap_model(self, model: torch.nn.Module) -> torch.nn.Module:
@@ -39,5 +43,13 @@ class BaseAdaptationMethod(ABC):
     ) -> None:
         del model, optimizer, global_step, calibration_batch_provider, device
 
+    def set_initialization_time(self, elapsed_seconds: float) -> None:
+        self._profiling["initialization_time_seconds"] = float(elapsed_seconds)
+
+    def add_rebase_time(self, elapsed_seconds: float) -> None:
+        self._profiling["rebase_time_seconds"] += float(elapsed_seconds)
+
     def get_artifacts(self) -> dict:
-        return {}
+        return {
+            "profiling": dict(self._profiling),
+        }

@@ -89,8 +89,26 @@ The helper script sets `PYTHONPATH`, a local Hugging Face cache directory, and r
 
 - `step120`
 - `gradient_mix=0.5`
-- `global_topk`
-- `topk_layers=2`
+- `query_only`
+- `topk_layers=1`
+
+For the full RTE suite on the same A10 server:
+
+```bash
+bash scripts/run_aliyun_rte_seed_suite.sh
+```
+
+For the full SST-2 suite:
+
+```bash
+bash scripts/run_aliyun_sst2_seed_suite.sh
+```
+
+Or run both task suites sequentially:
+
+```bash
+bash scripts/run_aliyun_rte_sst2_suites.sh
+```
 
 ## Current Scope
 

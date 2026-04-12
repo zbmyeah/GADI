@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import time
 
 import torch
 
@@ -19,6 +20,7 @@ class RebaseEvent:
     step: int
     refreshed_layers: list[str]
     scores: dict[str, float]
+    duration_seconds: float = 0.0
 
 
 @dataclass(slots=True)
@@ -46,6 +48,7 @@ class DynamicRebaser:
         global_step: int,
         calibration_batch_provider: CalibrationBatchProvider,
     ) -> RebaseEvent | None:
+        start_time = time.perf_counter()
         if not self.scheduler.should_rebase(global_step, self.rebase_count):
             return None
 
@@ -90,7 +93,12 @@ class DynamicRebaser:
 
         if not candidates:
             self.logger.info("GADI-R found no LoRA layer gradients at step %s.", global_step)
-            event = RebaseEvent(step=global_step, refreshed_layers=[], scores=layer_scores)
+            event = RebaseEvent(
+                step=global_step,
+                refreshed_layers=[],
+                scores=layer_scores,
+                duration_seconds=time.perf_counter() - start_time,
+            )
             self.history.append(event)
             return event
 
@@ -103,7 +111,12 @@ class DynamicRebaser:
         )
         if max_score < self.config.rebase.drift_threshold:
             self.logger.info("GADI-R checked drift at step %s but skipped re-basing.", global_step)
-            event = RebaseEvent(step=global_step, refreshed_layers=[], scores=layer_scores)
+            event = RebaseEvent(
+                step=global_step,
+                refreshed_layers=[],
+                scores=layer_scores,
+                duration_seconds=time.perf_counter() - start_time,
+            )
             self.history.append(event)
             return event
 
@@ -143,7 +156,12 @@ class DynamicRebaser:
         else:
             self.logger.info("GADI-R checked drift at step %s but skipped re-basing.", global_step)
 
-        event = RebaseEvent(step=global_step, refreshed_layers=refreshed_layers, scores=layer_scores)
+        event = RebaseEvent(
+            step=global_step,
+            refreshed_layers=refreshed_layers,
+            scores=layer_scores,
+            duration_seconds=time.perf_counter() - start_time,
+        )
         self.history.append(event)
         return event
 
