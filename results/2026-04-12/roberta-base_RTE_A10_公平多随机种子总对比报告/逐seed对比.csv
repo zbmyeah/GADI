@@ -1,0 +1,6 @@
+﻿seed,lora_accuracy,lora_ga_accuracy,gadi_accuracy,best_method,gadi_refreshed_layers
+11,0.5270758122743683,0.5523465703971119,0.555956678700361,GADI-R,base_model.model.roberta.encoder.layer.0.attention.self.query
+42,0.4693140794223827,0.48014440433212996,0.48014440433212996,LoRA-GA,base_model.model.roberta.encoder.layer.0.attention.self.query
+123,0.5270758122743683,0.5848375451263538,0.5956678700361011,GADI-R,base_model.model.roberta.encoder.layer.0.attention.self.query
+2026,0.4729241877256318,0.4729241877256318,0.4729241877256318,LoRA,base_model.model.roberta.encoder.layer.0.attention.self.query
+3407,0.5270758122743683,0.6498194945848376,0.6425992779783394,LoRA-GA,base_model.model.roberta.encoder.layer.0.attention.self.query

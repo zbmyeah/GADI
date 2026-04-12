@@ -1,0 +1,367 @@
+{
+  "method": "LoRA-GA",
+  "seed": 2026,
+  "metrics": {
+    "loss": 0.19916807730263525,
+    "accuracy": 0.9357798165137615,
+    "train_history": [
+      {
+        "step": 100,
+        "train_loss": 0.6379467010498047
+      },
+      {
+        "step": 200,
+        "train_loss": 0.3921041941642761
+      },
+      {
+        "step": 300,
+        "train_loss": 0.26606412172317506
+      },
+      {
+        "step": 400,
+        "train_loss": 0.2540526843070984
+      },
+      {
+        "step": 500,
+        "train_loss": 0.23375305891036988
+      },
+      {
+        "step": 600,
+        "train_loss": 0.2549945902824402
+      },
+      {
+        "step": 700,
+        "train_loss": 0.22652200281620025
+      },
+      {
+        "step": 800,
+        "train_loss": 0.22558077275753022
+      },
+      {
+        "step": 900,
+        "train_loss": 0.2295297634601593
+      },
+      {
+        "step": 1000,
+        "train_loss": 0.22787845611572266
+      },
+      {
+        "step": 1100,
+        "train_loss": 0.20905717983841896
+      },
+      {
+        "step": 1200,
+        "train_loss": 0.2331254841387272
+      },
+      {
+        "step": 1300,
+        "train_loss": 0.20310312509536743
+      },
+      {
+        "step": 1400,
+        "train_loss": 0.21237425044178962
+      },
+      {
+        "step": 1500,
+        "train_loss": 0.2258000150322914
+      },
+      {
+        "step": 1600,
+        "train_loss": 0.196443073451519
+      },
+      {
+        "step": 1700,
+        "train_loss": 0.1994128531217575
+      },
+      {
+        "step": 1800,
+        "train_loss": 0.20484861090779305
+      },
+      {
+        "step": 1900,
+        "train_loss": 0.18419244676828384
+      },
+      {
+        "step": 2000,
+        "train_loss": 0.21907739400863646
+      },
+      {
+        "step": 2100,
+        "train_loss": 0.20297300636768342
+      },
+      {
+        "step": 2200,
+        "train_loss": 0.1920836389064789
+      },
+      {
+        "step": 2300,
+        "train_loss": 0.20483139753341675
+      },
+      {
+        "step": 2400,
+        "train_loss": 0.18738654673099517
+      },
+      {
+        "step": 2500,
+        "train_loss": 0.18406577959656714
+      },
+      {
+        "step": 2600,
+        "train_loss": 0.19659345738589765
+      },
+      {
+        "step": 2700,
+        "train_loss": 0.19386056154966355
+      },
+      {
+        "step": 2800,
+        "train_loss": 0.20277966633439065
+      },
+      {
+        "step": 2900,
+        "train_loss": 0.16594207882881165
+      },
+      {
+        "step": 3000,
+        "train_loss": 0.2084317374229431
+      },
+      {
+        "step": 3100,
+        "train_loss": 0.18925429925322532
+      },
+      {
+        "step": 3200,
+        "train_loss": 0.18154816597700119
+      },
+      {
+        "step": 3300,
+        "train_loss": 0.17206307068467142
+      },
+      {
+        "step": 3400,
+        "train_loss": 0.16298507802188397
+      },
+      {
+        "step": 3500,
+        "train_loss": 0.19387027084827424
+      },
+      {
+        "step": 3600,
+        "train_loss": 0.21694272264838219
+      },
+      {
+        "step": 3700,
+        "train_loss": 0.17179442301392556
+      },
+      {
+        "step": 3800,
+        "train_loss": 0.16905142173171042
+      },
+      {
+        "step": 3900,
+        "train_loss": 0.1805864830315113
+      },
+      {
+        "step": 4000,
+        "train_loss": 0.18167298793792724
+      },
+      {
+        "step": 4100,
+        "train_loss": 0.2017932093143463
+      },
+      {
+        "step": 4200,
+        "train_loss": 0.17486602634191514
+      }
+    ],
+    "eval_history": [
+      {
+        "step": 200,
+        "loss": 0.26932698050770193,
+        "accuracy": 0.8967889908256881
+      },
+      {
+        "step": 400,
+        "loss": 0.23774210274766344,
+        "accuracy": 0.9048165137614679
+      },
+      {
+        "step": 600,
+        "loss": 0.21728256372136806,
+        "accuracy": 0.9162844036697247
+      },
+      {
+        "step": 800,
+        "loss": 0.21136550031123905,
+        "accuracy": 0.9220183486238532
+      },
+      {
+        "step": 1000,
+        "loss": 0.20397607394314687,
+        "accuracy": 0.9254587155963303
+      },
+      {
+        "step": 1200,
+        "loss": 0.1894536979428125,
+        "accuracy": 0.9323394495412844
+      },
+      {
+        "step": 1400,
+        "loss": 0.19448403686011603,
+        "accuracy": 0.9254587155963303
+      },
+      {
+        "step": 1600,
+        "loss": 0.20861207386222455,
+        "accuracy": 0.9197247706422018
+      },
+      {
+        "step": 1800,
+        "loss": 0.2012576515521478,
+        "accuracy": 0.9220183486238532
+      },
+      {
+        "step": 2000,
+        "loss": 0.19279668787750628,
+        "accuracy": 0.9288990825688074
+      },
+      {
+        "step": 2200,
+        "loss": 0.23771571784938147,
+        "accuracy": 0.9151376146788991
+      },
+      {
+        "step": 2400,
+        "loss": 0.18292485929410393,
+        "accuracy": 0.9334862385321101
+      },
+      {
+        "step": 2600,
+        "loss": 0.2119191149506,
+        "accuracy": 0.930045871559633
+      },
+      {
+        "step": 2800,
+        "loss": 0.18796915390075894,
+        "accuracy": 0.9323394495412844
+      },
+      {
+        "step": 3000,
+        "loss": 0.18852418975545726,
+        "accuracy": 0.9288990825688074
+      },
+      {
+        "step": 3200,
+        "loss": 0.20295006091441584,
+        "accuracy": 0.9288990825688074
+      },
+      {
+        "step": 3400,
+        "loss": 0.19615357909180703,
+        "accuracy": 0.9334862385321101
+      },
+      {
+        "step": 3600,
+        "loss": 0.2188229271031301,
+        "accuracy": 0.911697247706422
+      },
+      {
+        "step": 3800,
+        "loss": 0.20333389896865284,
+        "accuracy": 0.9346330275229358
+      },
+      {
+        "step": 4000,
+        "loss": 0.18782245839407685,
+        "accuracy": 0.9323394495412844
+      },
+      {
+        "step": 4200,
+        "loss": 0.185223943870002,
+        "accuracy": 0.9311926605504587
+      }
+    ],
+    "total_steps": 4210,
+    "method_artifacts": {
+      "profiling": {
+        "initialization_time_seconds": 2.240219609999258,
+        "rebase_time_seconds": 0.0
+      }
+    },
+    "runtime": {
+      "total_wall_time_seconds": 149.92766590299834,
+      "method_initialization_time_seconds": 2.240219609999258,
+      "rebase_overhead_time_seconds": 0.0,
+      "peak_memory_allocated_mb": 1470.87646484375,
+      "peak_memory_reserved_mb": 2028.0,
+      "device": "cuda"
+    }
+  },
+  "elapsed_seconds": 149.93915835400003,
+  "config": {
+    "seed": 2026,
+    "method": "lora_ga",
+    "model": {
+      "model_name_or_path": "roberta-base",
+      "task_type": "SEQ_CLS",
+      "num_labels": 2,
+      "target_modules": [
+        "query",
+        "value"
+      ],
+      "torch_dtype": null
+    },
+    "data": {
+      "dataset_name": "glue",
+      "dataset_config_name": "sst2",
+      "max_length": 128,
+      "calibration_size": 32
+    },
+    "lora": {
+      "rank": 8,
+      "alpha": 16,
+      "dropout": 0.0,
+      "bias": "none",
+      "use_rslora": false,
+      "adapter_name": "default"
+    },
+    "lora_ga": {
+      "gamma": 16.0,
+      "calibration_batches": 1
+    },
+    "rebase": {
+      "enabled": false,
+      "interval_steps": 200,
+      "warmup_steps": 0,
+      "max_rebases": null,
+      "drift_threshold": 0.15,
+      "topk_layers": 2,
+      "selection_strategy": "global_topk",
+      "calibration_batches": 1,
+      "use_residual_gradient": true,
+      "gradient_mix": 0.7,
+      "calibration_eval_mode": true,
+      "reset_optimizer_state": false
+    },
+    "optimizer": {
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0
+    },
+    "training": {
+      "output_dir": "results/2026-04-12/roberta-base_SST-2_LoRA-GA多随机种子验证_A10/lora_ga_seed_2026_163454/模型权重",
+      "train_batch_size": 16,
+      "eval_batch_size": 128,
+      "dataloader_num_workers": 0,
+      "pin_memory": true,
+      "persistent_workers": false,
+      "gradient_accumulation_steps": 1,
+      "num_epochs": 1,
+      "max_steps": null,
+      "log_every_steps": 100,
+      "eval_every_steps": 200,
+      "use_amp": true,
+      "amp_dtype": "bfloat16",
+      "allow_tf32": true
+    }
+  }
+}

@@ -1,0 +1,189 @@
+{
+  "method": "LoRA",
+  "seed": 42,
+  "metrics": {
+    "loss": 0.6907338035235766,
+    "accuracy": 0.4693140794223827,
+    "train_history": [
+      {
+        "step": 10,
+        "train_loss": 0.7038330078125
+      },
+      {
+        "step": 20,
+        "train_loss": 0.692138671875
+      },
+      {
+        "step": 30,
+        "train_loss": 0.7193359375
+      },
+      {
+        "step": 40,
+        "train_loss": 0.688818359375
+      },
+      {
+        "step": 50,
+        "train_loss": 0.68984375
+      },
+      {
+        "step": 60,
+        "train_loss": 0.693994140625
+      },
+      {
+        "step": 70,
+        "train_loss": 0.688720703125
+      },
+      {
+        "step": 80,
+        "train_loss": 0.692138671875
+      },
+      {
+        "step": 90,
+        "train_loss": 0.6982177734375
+      },
+      {
+        "step": 100,
+        "train_loss": 0.6910888671875
+      },
+      {
+        "step": 110,
+        "train_loss": 0.6944580078125
+      },
+      {
+        "step": 120,
+        "train_loss": 0.694873046875
+      },
+      {
+        "step": 130,
+        "train_loss": 0.6974365234375
+      },
+      {
+        "step": 140,
+        "train_loss": 0.6905517578125
+      },
+      {
+        "step": 150,
+        "train_loss": 0.691796875
+      }
+    ],
+    "eval_history": [
+      {
+        "step": 20,
+        "loss": 0.7120168777149076,
+        "accuracy": 0.4729241877256318
+      },
+      {
+        "step": 40,
+        "loss": 0.6915293264905468,
+        "accuracy": 0.5270758122743683
+      },
+      {
+        "step": 60,
+        "loss": 0.6939412217708271,
+        "accuracy": 0.5270758122743683
+      },
+      {
+        "step": 80,
+        "loss": 0.6909141751402982,
+        "accuracy": 0.5270758122743683
+      },
+      {
+        "step": 100,
+        "loss": 0.6912459649333885,
+        "accuracy": 0.5631768953068592
+      },
+      {
+        "step": 120,
+        "loss": 0.6898420915706923,
+        "accuracy": 0.5270758122743683
+      },
+      {
+        "step": 140,
+        "loss": 0.691300670162435,
+        "accuracy": 0.49097472924187724
+      }
+    ],
+    "total_steps": 156,
+    "method_artifacts": {
+      "profiling": {
+        "initialization_time_seconds": 2.844300070137251e-05,
+        "rebase_time_seconds": 0.0
+      }
+    },
+    "runtime": {
+      "total_wall_time_seconds": 22.50564287400084,
+      "method_initialization_time_seconds": 2.844300070137251e-05,
+      "rebase_overhead_time_seconds": 0.0,
+      "peak_memory_allocated_mb": 1286.982421875,
+      "peak_memory_reserved_mb": 1652.0,
+      "device": "cuda"
+    }
+  },
+  "elapsed_seconds": 22.51886303699939,
+  "config": {
+    "seed": 42,
+    "method": "lora",
+    "model": {
+      "model_name_or_path": "roberta-base",
+      "task_type": "SEQ_CLS",
+      "num_labels": 2,
+      "target_modules": [
+        "query",
+        "value"
+      ],
+      "torch_dtype": null
+    },
+    "data": {
+      "dataset_name": "glue",
+      "dataset_config_name": "rte",
+      "max_length": 128,
+      "calibration_size": 32
+    },
+    "lora": {
+      "rank": 8,
+      "alpha": 16,
+      "dropout": 0.0,
+      "bias": "none",
+      "use_rslora": false,
+      "adapter_name": "default"
+    },
+    "lora_ga": {
+      "gamma": 16.0,
+      "calibration_batches": 1
+    },
+    "rebase": {
+      "enabled": false,
+      "interval_steps": 200,
+      "warmup_steps": 0,
+      "max_rebases": null,
+      "drift_threshold": 0.15,
+      "topk_layers": 2,
+      "selection_strategy": "global_topk",
+      "calibration_batches": 1,
+      "use_residual_gradient": true,
+      "gradient_mix": 0.7,
+      "calibration_eval_mode": true,
+      "reset_optimizer_state": false
+    },
+    "optimizer": {
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0
+    },
+    "training": {
+      "output_dir": "results/2026-04-12/roberta-base_RTE_LoRA多随机种子验证_A10/lora_seed_42_155754/模型权重",
+      "train_batch_size": 16,
+      "eval_batch_size": 64,
+      "dataloader_num_workers": 0,
+      "pin_memory": true,
+      "persistent_workers": false,
+      "gradient_accumulation_steps": 1,
+      "num_epochs": 1,
+      "max_steps": null,
+      "log_every_steps": 10,
+      "eval_every_steps": 20,
+      "use_amp": true,
+      "amp_dtype": "bfloat16",
+      "allow_tf32": true
+    }
+  }
+}
