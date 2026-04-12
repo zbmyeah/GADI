@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any
 
 import torch
+from huggingface_hub import snapshot_download
 from peft import PeftModel
 from sklearn.metrics import f1_score
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
@@ -71,6 +72,28 @@ def _load_config_from_payload(payload: dict[str, Any]) -> ExperimentConfig:
     )
 
 
+def _resolve_base_model_source(model_name_or_path: str) -> str:
+    local_path = Path(model_name_or_path)
+    if local_path.exists():
+        return str(local_path)
+
+    try:
+        snapshot_path = snapshot_download(
+            repo_id=model_name_or_path,
+            local_files_only=True,
+        )
+        LOGGER.info("Resolved local snapshot for %s: %s", model_name_or_path, snapshot_path)
+        return snapshot_path
+    except Exception as exc:
+        LOGGER.warning(
+            "Could not resolve local snapshot for %s, will fall back to endpoint %s | reason=%s",
+            model_name_or_path,
+            os.environ.get("HF_ENDPOINT"),
+            exc,
+        )
+        return model_name_or_path
+
+
 def _load_adapter_model(checkpoint_dir: Path, config: ExperimentConfig) -> tuple[torch.nn.Module, Any]:
     tokenizer = AutoTokenizer.from_pretrained(checkpoint_dir, use_fast=True)
     if tokenizer.pad_token is None and tokenizer.eos_token is not None:
@@ -79,18 +102,19 @@ def _load_adapter_model(checkpoint_dir: Path, config: ExperimentConfig) -> tuple
     load_kwargs = {
         "num_labels": config.model.num_labels,
     }
+    base_model_source = _resolve_base_model_source(config.model.model_name_or_path)
 
     try:
-        LOGGER.info("Trying local-cache base model load first: %s", config.model.model_name_or_path)
+        LOGGER.info("Trying base model load from source: %s", base_model_source)
         base_model = AutoModelForSequenceClassification.from_pretrained(
-            config.model.model_name_or_path,
-            local_files_only=True,
+            base_model_source,
+            local_files_only=Path(base_model_source).exists(),
             **load_kwargs,
         )
     except Exception as exc:
         LOGGER.warning(
             "Local-cache load failed for %s, falling back to HF endpoint %s | reason=%s",
-            config.model.model_name_or_path,
+            base_model_source,
             os.environ.get("HF_ENDPOINT"),
             exc,
         )
