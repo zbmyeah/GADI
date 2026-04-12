@@ -1,0 +1,562 @@
+nohup: ignoring input
+2026-04-12 13:57:07,621 | INFO | gadir_seed_validation | Starting multi-seed validation | config=configs/experiment/roberta_gadi_r_aliyun_a10.yaml | seeds=[11, 42, 123, 3407, 2026] | experiment_type=roberta-base_MRPC_GADI-R多随机种子验证_A10
+2026-04-12 13:57:07,625 | INFO | gadir_seed_validation | Reference baselines | LoRA=0.781863 | LoRA-GA=0.811275
+2026-04-12 13:57:07,625 | INFO | gadir_seed_validation | Running GADI-R fixed-config seed=11
+2026-04-12 13:57:07,646 | INFO | trainer | Preparing run | method=gadi_r | seed=11 | model=roberta-base | dataset=glue/mrpc
+2026-04-12 13:57:07,646 | INFO | trainer | Loading model and tokenizer...
+2026-04-12 13:57:09,789 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+2026-04-12 13:57:10,910 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+2026-04-12 13:57:11,281 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-04-12 13:57:11,629 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/roberta-base/resolve/main/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-04-12 13:57:12,837 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/models/roberta-base/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 13:57:13,014 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/models/FacebookAI/roberta-base/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-04-12 13:57:13,196 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/models/roberta-base/tree/main?recursive=true&expand=false "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 13:57:13,388 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/models/FacebookAI/roberta-base/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-04-12 13:57:14,282 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/vocab.json "HTTP/1.1 200 OK"
+2026-04-12 13:57:14,786 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/roberta-base/resolve/main/vocab.json "HTTP/1.1 200 OK"
+2026-04-12 13:57:16,336 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/merges.txt "HTTP/1.1 200 OK"
+2026-04-12 13:57:16,734 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/roberta-base/resolve/main/merges.txt "HTTP/1.1 200 OK"
+2026-04-12 13:57:17,814 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/tokenizer.json "HTTP/1.1 200 OK"
+2026-04-12 13:57:18,482 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/roberta-base/resolve/main/tokenizer.json "HTTP/1.1 200 OK"
+2026-04-12 13:57:20,294 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/added_tokens.json "HTTP/1.1 404 Not Found"
+2026-04-12 13:57:20,670 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/special_tokens_map.json "HTTP/1.1 404 Not Found"
+2026-04-12 13:57:21,084 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/chat_template.jinja "HTTP/1.1 404 Not Found"
+2026-04-12 13:57:21,675 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+2026-04-12 13:57:22,074 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/adapter_config.json "HTTP/1.1 404 Not Found"
+2026-04-12 13:57:22,409 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+2026-04-12 13:57:22,775 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/model.safetensors "HTTP/1.1 302 Found"
+2026-04-12 13:57:23,083 | INFO | httpx | HTTP Request: GET https://cas-bridge.xethub.hf.co/xet-bridge-us/621ffdc036468d709f174350/bc535ab3097a56e20bcc503fc9284ea31b20020638626504e33ed18633920fda?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=cas%2F20260412%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260412T055722Z&X-Amz-Expires=3600&X-Amz-Signature=c4151e879937f129e19d64fc672d9dd8811a191c3d0a3977e1f21c92ce2177f7&X-Amz-SignedHeaders=host&X-Xet-Cas-Uid=62171e3b6a99db28e0b3159d&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27model.safetensors%3B+filename%3D%22model.safetensors%22%3B&x-amz-checksum-mode=ENABLED&x-id=GetObject&Expires=1775977042&Policy=eyJTdGF0ZW1lbnQiOlt7IkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc3NTk3NzA0Mn19LCJSZXNvdXJjZSI6Imh0dHBzOi8vY2FzLWJyaWRnZS54ZXRodWIuaGYuY28veGV0LWJyaWRnZS11cy82MjFmZmRjMDM2NDY4ZDcwOWYxNzQzNTAvYmM1MzVhYjMwOTdhNTZlMjBiY2M1MDNmYzkyODRlYTMxYjIwMDIwNjM4NjI2NTA0ZTMzZWQxODYzMzkyMGZkYSoifV19&Signature=Xyr6n4N9uAj7cNqYfpTkdLStwFtmIqbSvEEreJsBzJD50k1jOCZkQxsMPCRTRMN50TVZVSkRMlGzflaQ1wLC%7EpNAXIVDzhRtMWM2%7E1-NNvL85zzZhpktwCC1-gsUjCvJfs5uezr4LRgUhd%7EAMUB60IeAjUVzDgd0SQMHBSvYzcR%7ECi7fqZlDiqIf7a3%7ElwiWa%7EZfXxjhJvWBY3EH9ydk-qyQisL9fnr%7E3kT2cX1aaGtE0inDTOH-j6%7EFbxfGIKK2H7kbe6z5KWyWTV7x8CGqmOPhKs9ftw996c8KHpIvyyRPZd23jIhTpulTca0zyzFWCoI9aR4svj5%7EcKUFP7DI%7Ew__&Key-Pair-Id=K2L8F4GPSG1IFC "HTTP/1.1 200 OK"
+Loading weights:   0%|                                                                                              | 0/197 [00:00<?, ?it/s]Loading weights: 100%|█████████████████████████████████████████████████████████████████████████████████| 197/197 [00:00<00:00, 15898.21it/s]
+[1mRobertaForSequenceClassification LOAD REPORT[0m from: roberta-base
+Key                             | Status     | 
+--------------------------------+------------+-
+lm_head.bias                    | UNEXPECTED | 
+lm_head.layer_norm.weight       | UNEXPECTED | 
+roberta.embeddings.position_ids | UNEXPECTED | 
+lm_head.dense.weight            | UNEXPECTED | 
+lm_head.dense.bias              | UNEXPECTED | 
+lm_head.layer_norm.bias         | UNEXPECTED | 
+classifier.out_proj.weight      | MISSING    | 
+classifier.dense.weight         | MISSING    | 
+classifier.out_proj.bias        | MISSING    | 
+classifier.dense.bias           | MISSING    | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+2026-04-12 14:04:11,325 | INFO | trainer | Loaded model. Building datasets and dataloaders...
+2026-04-12 14:04:12,753 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/glue/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:04:13,881 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/nyu-mll/glue/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:04:14,617 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/api/resolve-cache/datasets/nyu-mll/glue/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/README.md "HTTP/1.1 200 OK"
+2026-04-12 14:04:14,781 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/resolve-cache/datasets/nyu-mll/glue/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/README.md "HTTP/1.1 200 OK"
+2026-04-12 14:04:15,154 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/glue.py "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:04:15,483 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/nyu-mll/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/glue.py "HTTP/1.1 404 Not Found"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-04-12 14:04:15,484 | WARNING | huggingface_hub.utils._http | Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-04-12 14:04:16,198 | INFO | httpx | HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/glue/glue.py "HTTP/1.1 200 OK"
+2026-04-12 14:04:16,379 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/datasets/glue/revision/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:04:16,538 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/datasets/nyu-mll/glue/revision/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c "HTTP/1.1 200 OK"
+2026-04-12 14:04:16,950 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/.huggingface.yaml "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:04:17,340 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/nyu-mll/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/.huggingface.yaml "HTTP/1.1 404 Not Found"
+2026-04-12 14:04:18,470 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/datasets/glue/tree/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/ax?recursive=true&expand=false "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:04:18,715 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/datasets/nyu-mll/glue/tree/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/ax?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-04-12 14:04:18,946 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/datasets/glue/tree/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c?recursive=false&expand=false "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:04:19,130 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/datasets/nyu-mll/glue/tree/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c?recursive=false&expand=false "HTTP/1.1 200 OK"
+2026-04-12 14:04:19,442 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/dataset_infos.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:04:19,795 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/nyu-mll/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/dataset_infos.json "HTTP/1.1 404 Not Found"
+2026-04-12 14:04:20,009 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/datasets/glue/tree/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/mrpc?recursive=true&expand=false "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:04:20,223 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/datasets/nyu-mll/glue/tree/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/mrpc?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-04-12 14:04:20,986 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/mrpc/train-00000-of-00001.parquet "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:04:21,399 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/nyu-mll/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/mrpc/train-00000-of-00001.parquet "HTTP/1.1 302 Found"
+2026-04-12 14:04:21,716 | INFO | httpx | HTTP Request: GET https://cas-bridge.xethub.hf.co/xet-bridge-us/621ffdd236468d709f181e3f/f3bd68beff2db7dc08d20b5869955e6775b9d5b8fcbefe7c229267d80266e71b?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=cas%2F20260412%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260412T060421Z&X-Amz-Expires=3600&X-Amz-Signature=2c7e638a59882a066932b28e6761928eae8a43b2cb5aca29c7270faae1a7e33c&X-Amz-SignedHeaders=host&X-Xet-Cas-Uid=62171e3b6a99db28e0b3159d&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27train-00000-of-00001.parquet%3B+filename%3D%22train-00000-of-00001.parquet%22%3B&x-amz-checksum-mode=ENABLED&x-id=GetObject&Expires=1775977461&Policy=eyJTdGF0ZW1lbnQiOlt7IkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc3NTk3NzQ2MX19LCJSZXNvdXJjZSI6Imh0dHBzOi8vY2FzLWJyaWRnZS54ZXRodWIuaGYuY28veGV0LWJyaWRnZS11cy82MjFmZmRkMjM2NDY4ZDcwOWYxODFlM2YvZjNiZDY4YmVmZjJkYjdkYzA4ZDIwYjU4Njk5NTVlNjc3NWI5ZDViOGZjYmVmZTdjMjI5MjY3ZDgwMjY2ZTcxYioifV19&Signature=L4dKHZl2EOsLmGYyxbfTH0H9hvB1AI3gnVfzWpzGEVgV89gi2XN33H9z03cbPK12zbH%7EWTdHn5z%7ES3QYMWvWzI%7EC0D8-P4rhyurHOCfZ5hFOJiw7T7%7EMQC-5Pz9f3Rmcrdpit1M%7EvGh2zYLdaoPvVDUgDpxPyNIwaWiVF591V97IIKDOXQC4pi-s9hFMBXJVO%7ERLUa2XEdG9IZFRWDyO%7EYpDZY5CsBHBvvPP4n5gbodqWm5ju8BNYv05VCkVXp0RFUI7sdYDyUN%7EYPBuSxHZOiUdoOi1FImCcV3Ccg5RkffoOk0Tbc4h9xoMn7V%7EKUblpvunA9VwkvPGfizxYFcR1Q__&Key-Pair-Id=K2L8F4GPSG1IFC "HTTP/1.1 200 OK"
+2026-04-12 14:04:22,495 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/mrpc/validation-00000-of-00001.parquet "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:04:22,917 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/nyu-mll/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/mrpc/validation-00000-of-00001.parquet "HTTP/1.1 302 Found"
+2026-04-12 14:04:23,005 | INFO | httpx | HTTP Request: GET https://cas-bridge.xethub.hf.co/xet-bridge-us/621ffdd236468d709f181e3f/8fb25a7705d9b7e33090cfb4f662b152b47b1aedf206a872ac21a17978c003c3?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=cas%2F20260412%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260412T060422Z&X-Amz-Expires=3600&X-Amz-Signature=9a76553e00f6b849b4a94246bba77d0e8c593d49b087e7698ab70ee09ea42c7d&X-Amz-SignedHeaders=host&X-Xet-Cas-Uid=62171e3b6a99db28e0b3159d&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27validation-00000-of-00001.parquet%3B+filename%3D%22validation-00000-of-00001.parquet%22%3B&x-amz-checksum-mode=ENABLED&x-id=GetObject&Expires=1775977462&Policy=eyJTdGF0ZW1lbnQiOlt7IkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc3NTk3NzQ2Mn19LCJSZXNvdXJjZSI6Imh0dHBzOi8vY2FzLWJyaWRnZS54ZXRodWIuaGYuY28veGV0LWJyaWRnZS11cy82MjFmZmRkMjM2NDY4ZDcwOWYxODFlM2YvOGZiMjVhNzcwNWQ5YjdlMzMwOTBjZmI0ZjY2MmIxNTJiNDdiMWFlZGYyMDZhODcyYWMyMWExNzk3OGMwMDNjMyoifV19&Signature=noorLsjdjwNi97flCWOKckwN4YoQfjirjos87oa0AE29BkyC9QfYLWw02GvfwGqU1C5ST-BWyXW9i%7E2ch3BsjmfrDVx3DkGzVJlwNs-FeL-1EfoEhmd73NcWXpmSYPmBzIL64KhsQMpPwUlLYEskZsZ5DDJt0QdoOpxdLOJKu6HUOlD1UFkPLJ%7EAsFpBQo0VAaTyX9sVyD3SQIBGhd5GNPjVGuGf5%7EMxoHjB1rqKHclnssI7glKD8cubT92uVm56XVZ9BxGbO-E864CvTg2A5dJSqqbOpyiejfqFnGuk8OdJNWGQR3O%7E5qTAFGSr6ntiYPMyp8Yi2rK42Uinb2S11Q__&Key-Pair-Id=K2L8F4GPSG1IFC "HTTP/1.1 200 OK"
+2026-04-12 14:04:23,384 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/mrpc/test-00000-of-00001.parquet "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:04:23,834 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/nyu-mll/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/mrpc/test-00000-of-00001.parquet "HTTP/1.1 302 Found"
+2026-04-12 14:04:23,922 | INFO | httpx | HTTP Request: GET https://cas-bridge.xethub.hf.co/xet-bridge-us/621ffdd236468d709f181e3f/3611790b6193f52f63df3e897a7bf8b07789baba6badcd77dbab2b46e4b70cbf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=cas%2F20260412%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260412T060423Z&X-Amz-Expires=3600&X-Amz-Signature=8629594ad0e21e0a8e3dc7bb177da319f89b8365c2db7ec41771e064f561957d&X-Amz-SignedHeaders=host&X-Xet-Cas-Uid=62171e3b6a99db28e0b3159d&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27test-00000-of-00001.parquet%3B+filename%3D%22test-00000-of-00001.parquet%22%3B&x-amz-checksum-mode=ENABLED&x-id=GetObject&Expires=1775977463&Policy=eyJTdGF0ZW1lbnQiOlt7IkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc3NTk3NzQ2M319LCJSZXNvdXJjZSI6Imh0dHBzOi8vY2FzLWJyaWRnZS54ZXRodWIuaGYuY28veGV0LWJyaWRnZS11cy82MjFmZmRkMjM2NDY4ZDcwOWYxODFlM2YvMzYxMTc5MGI2MTkzZjUyZjYzZGYzZTg5N2E3YmY4YjA3Nzg5YmFiYTZiYWRjZDc3ZGJhYjJiNDZlNGI3MGNiZioifV19&Signature=CfTAPuFZKHEebb7tNekebZMf1MyiIQrkO1DDU2Me8CY8Go%7EndOKI%7Eyb9rN%7EXa%7Eao2WzirnnptWPLNHC27SsTkhpzg-yrrzPkZFkIrIoOyEvbY%7EOPVyZikl3DvIy25gDQ-ZHBWYSRrBK4g2LAmSsdvHEjl4fIdf0EIGn0m%7Edxd8iuJLUXWWQoo82wdtzy4xCxEXdjJrUSLWdU12z-HJdhA37hBgruygtf9VhTyQwohQmFaqYMJqp0pOBg--arYS45-zAz0X7Sge6lCJGW7Cal2nw7Z4slAUCasW2gAsuTQteBG4IO2pSOo29QkTionOj60zOYwCNFk5R1M7qBIY4LMA__&Key-Pair-Id=K2L8F4GPSG1IFC "HTTP/1.1 200 OK"
+Generating train split:   0%|                                                                               | 0/3668 [00:00<?, ? examples/s]Generating train split: 100%|████████████████████████████████████████████████████████████████| 3668/3668 [00:00<00:00, 701889.09 examples/s]
+Generating validation split:   0%|                                                                           | 0/408 [00:00<?, ? examples/s]Generating validation split: 100%|█████████████████████████████████████████████████████████████| 408/408 [00:00<00:00, 204258.30 examples/s]
+Generating test split:   0%|                                                                                | 0/1725 [00:00<?, ? examples/s]Generating test split: 100%|█████████████████████████████████████████████████████████████████| 1725/1725 [00:00<00:00, 593777.14 examples/s]
+Map:   0%|                                                                                                  | 0/3668 [00:00<?, ? examples/s]Map:  27%|███████████████████████▏                                                             | 1000/3668 [00:00<00:00, 8244.20 examples/s]Map:  55%|██████████████████████████████████████████████▎                                      | 2000/3668 [00:00<00:00, 8252.24 examples/s]Map:  82%|█████████████████████████████████████████████████████████████████████▌               | 3000/3668 [00:00<00:00, 8262.54 examples/s]Map: 100%|█████████████████████████████████████████████████████████████████████████████████████| 3668/3668 [00:00<00:00, 8215.22 examples/s]
+Map:   0%|                                                                                                   | 0/408 [00:00<?, ? examples/s]Map: 100%|███████████████████████████████████████████████████████████████████████████████████████| 408/408 [00:00<00:00, 7720.66 examples/s]
+Map:   0%|                                                                                                  | 0/1725 [00:00<?, ? examples/s]Map:  58%|█████████████████████████████████████████████████▎                                   | 1000/1725 [00:00<00:00, 8283.72 examples/s]Map: 100%|█████████████████████████████████████████████████████████████████████████████████████| 1725/1725 [00:00<00:00, 8118.32 examples/s]
+2026-04-12 14:04:25,935 | INFO | trainer | Data ready | train_batches=230 | eval_batches=13 | calibration_batches=2
+trainable params: 887,042 || all params: 125,534,212 || trainable%: 0.7066
+2026-04-12 14:04:26,262 | INFO | trainer | Model wrapped with method=gadi_r and moved to device=cuda.
+/usr/local/lib/python3.11/site-packages/torch/backends/__init__.py:46: UserWarning: Please use the new API settings to control TF32 behavior, such as torch.backends.cudnn.conv.fp32_precision = 'tf32' or torch.backends.cuda.matmul.fp32_precision = 'ieee'. Old settings, e.g, torch.backends.cuda.matmul.allow_tf32 = True, torch.backends.cudnn.allow_tf32 = True, allowTF32CuDNN() and allowTF32CuBLAS() will be deprecated after Pytorch 2.9. Please see https://pytorch.org/docs/main/notes/cuda.html#tensorfloat-32-tf32-on-ampere-and-later-devices (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:80.)
+  self.setter(val)
+2026-04-12 14:04:26,262 | INFO | trainer | Precision setup | amp_enabled=True | amp_dtype=torch.bfloat16 | allow_tf32=True
+2026-04-12 14:04:26,298 | INFO | trainer | Initializing method-specific state...
+2026-04-12 14:04:26,298 | INFO | GADIRMethod | LoRA-GA initialization started | calibration_batches=1
+2026-04-12 14:04:26,311 | INFO | gradient_collector | Collecting gradients | batches=1 | mode=train | lora_layers=24
+`use_return_dict` is deprecated! Use `return_dict` instead!
+2026-04-12 14:04:26,748 | INFO | gradient_collector | Gradient collection progress | batch=1/1 | loss=0.7190
+2026-04-12 14:04:26,752 | INFO | gradient_collector | Finished gradient collection for 24 layers.
+2026-04-12 14:04:26,752 | INFO | GADIRMethod | LoRA-GA initialization collected gradients for 24 layers. Building low-rank factors...
+2026-04-12 14:04:26,874 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=1 | latest_layer=base_model.model.roberta.encoder.layer.0.attention.self.query
+2026-04-12 14:04:27,077 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=4 | latest_layer=base_model.model.roberta.encoder.layer.1.attention.self.value
+2026-04-12 14:04:27,331 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=8 | latest_layer=base_model.model.roberta.encoder.layer.3.attention.self.value
+2026-04-12 14:04:27,584 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=12 | latest_layer=base_model.model.roberta.encoder.layer.5.attention.self.value
+2026-04-12 14:04:27,840 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=16 | latest_layer=base_model.model.roberta.encoder.layer.7.attention.self.value
+2026-04-12 14:04:28,093 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=20 | latest_layer=base_model.model.roberta.encoder.layer.9.attention.self.value
+2026-04-12 14:04:28,405 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=24 | latest_layer=base_model.model.roberta.encoder.layer.11.attention.self.value
+2026-04-12 14:04:28,405 | INFO | GADIRMethod | LoRA-GA initialization refreshed 24 LoRA layers.
+2026-04-12 14:04:28,406 | INFO | trainer | Initialization finished in 2.11 seconds.
+2026-04-12 14:04:28,408 | INFO | trainer | Starting training for 230 optimizer steps on device=cuda.
+2026-04-12 14:04:28,697 | INFO | trainer | heartbeat step=1/230 | latest_loss=0.6416 | elapsed=0.3s
+2026-04-12 14:04:29,316 | INFO | trainer | step=20/230 | train_loss=0.6381
+2026-04-12 14:04:29,941 | INFO | trainer | step=40/230 | train_loss=0.6587
+2026-04-12 14:04:29,942 | INFO | trainer | Starting evaluation at step=40...
+2026-04-12 14:04:30,324 | INFO | trainer | Completed evaluation at step=40 | eval={'loss': 0.627074681076349, 'accuracy': 0.6838235294117647}
+2026-04-12 14:04:30,938 | INFO | trainer | step=60/230 | train_loss=0.6133
+2026-04-12 14:04:31,541 | INFO | trainer | step=80/230 | train_loss=0.6184
+2026-04-12 14:04:31,541 | INFO | trainer | Starting evaluation at step=80...
+2026-04-12 14:04:31,866 | INFO | trainer | Completed evaluation at step=80 | eval={'loss': 0.6072227814618278, 'accuracy': 0.6838235294117647}
+2026-04-12 14:04:32,483 | INFO | trainer | step=100/230 | train_loss=0.5836
+2026-04-12 14:04:33,078 | INFO | DynamicRebaser | GADI-R drift check triggered at step=120 | calibration_batches=4
+2026-04-12 14:04:33,080 | INFO | gradient_collector | Collecting gradients | batches=4 | mode=eval | lora_layers=24
+2026-04-12 14:04:33,114 | INFO | gradient_collector | Gradient collection progress | batch=1/4 | loss=0.6471
+2026-04-12 14:04:33,142 | INFO | gradient_collector | Gradient collection progress | batch=2/4 | loss=0.6373
+2026-04-12 14:04:33,170 | INFO | gradient_collector | Gradient collection progress | batch=3/4 | loss=0.6471
+2026-04-12 14:04:33,199 | INFO | gradient_collector | Gradient collection progress | batch=4/4 | loss=0.6373
+2026-04-12 14:04:33,202 | INFO | gradient_collector | Finished gradient collection for 24 layers.
+2026-04-12 14:04:33,270 | INFO | DynamicRebaser | GADI-R drift summary at step=120 | max_score=0.7421 | threshold=0.0300
+2026-04-12 14:04:33,270 | INFO | DynamicRebaser | GADI-R selected layers at step=120: base_model.model.roberta.encoder.layer.0.attention.self.query, base_model.model.roberta.encoder.layer.1.attention.self.query
+2026-04-12 14:04:33,449 | INFO | DynamicRebaser | GADI-R re-based 2 layers at step 120 (count=1): base_model.model.roberta.encoder.layer.0.attention.self.query, base_model.model.roberta.encoder.layer.1.attention.self.query
+2026-04-12 14:04:33,449 | INFO | trainer | step=120/230 | train_loss=0.6334
+2026-04-12 14:04:33,449 | INFO | trainer | Starting evaluation at step=120...
+2026-04-12 14:04:33,771 | INFO | trainer | Completed evaluation at step=120 | eval={'loss': 0.5769429288658441, 'accuracy': 0.7107843137254902}
+2026-04-12 14:04:34,369 | INFO | trainer | step=140/230 | train_loss=0.5876
+2026-04-12 14:04:34,975 | INFO | trainer | step=160/230 | train_loss=0.5533
+2026-04-12 14:04:34,975 | INFO | trainer | Starting evaluation at step=160...
+2026-04-12 14:04:35,296 | INFO | trainer | Completed evaluation at step=160 | eval={'loss': 0.4714698996029648, 'accuracy': 0.7745098039215687}
+2026-04-12 14:04:35,904 | INFO | trainer | step=180/230 | train_loss=0.5134
+2026-04-12 14:04:36,519 | INFO | trainer | step=200/230 | train_loss=0.4532
+2026-04-12 14:04:36,519 | INFO | trainer | Starting evaluation at step=200...
+2026-04-12 14:04:36,841 | INFO | trainer | Completed evaluation at step=200 | eval={'loss': 0.41396267741334203, 'accuracy': 0.8088235294117647}
+2026-04-12 14:04:37,431 | INFO | trainer | step=220/230 | train_loss=0.4434
+2026-04-12 14:04:37,734 | INFO | trainer | Starting final evaluation...
+2026-04-12 14:04:38,059 | INFO | trainer | final_eval={'loss': 0.39458415379711226, 'accuracy': 0.8382352941176471}
+2026-04-12 14:04:38,059 | INFO | trainer | Saving model artifacts to /mnt/workspace/GADI/results/2026-04-12/roberta-base_MRPC_GADI-R多随机种子验证_A10/gadi_seed_11_135707/模型权重...
+2026-04-12 14:04:41,954 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+2026-04-12 14:04:42,798 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+2026-04-12 14:04:42,829 | INFO | trainer | Saved model artifacts to /mnt/workspace/GADI/results/2026-04-12/roberta-base_MRPC_GADI-R多随机种子验证_A10/gadi_seed_11_135707/模型权重
+2026-04-12 14:04:42,902 | INFO | gadir_seed_validation | Finished seed=11 | reused=False | final_accuracy=0.838235 | final_loss=0.394584
+2026-04-12 14:04:42,902 | INFO | gadir_seed_validation | Running GADI-R fixed-config seed=42
+2026-04-12 14:04:42,905 | INFO | trainer | Preparing run | method=gadi_r | seed=42 | model=roberta-base | dataset=glue/mrpc
+2026-04-12 14:04:42,905 | INFO | trainer | Loading model and tokenizer...
+2026-04-12 14:04:43,800 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+2026-04-12 14:04:44,676 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-04-12 14:04:45,500 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/models/roberta-base/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:04:46,403 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/models/FacebookAI/roberta-base/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-04-12 14:04:47,182 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/models/roberta-base/tree/main?recursive=true&expand=false "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:04:47,948 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/models/FacebookAI/roberta-base/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-04-12 14:04:49,131 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+2026-04-12 14:04:51,178 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+Loading weights:   0%|                                                                                              | 0/197 [00:00<?, ?it/s]Loading weights: 100%|██████████████████████████████████████████████████████████████████████████████████| 197/197 [00:00<00:00, 7575.87it/s]
+[1mRobertaForSequenceClassification LOAD REPORT[0m from: roberta-base
+Key                             | Status     | 
+--------------------------------+------------+-
+lm_head.bias                    | UNEXPECTED | 
+lm_head.layer_norm.weight       | UNEXPECTED | 
+roberta.embeddings.position_ids | UNEXPECTED | 
+lm_head.dense.weight            | UNEXPECTED | 
+lm_head.dense.bias              | UNEXPECTED | 
+lm_head.layer_norm.bias         | UNEXPECTED | 
+classifier.out_proj.weight      | MISSING    | 
+classifier.dense.weight         | MISSING    | 
+classifier.out_proj.bias        | MISSING    | 
+classifier.dense.bias           | MISSING    | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+2026-04-12 14:04:51,248 | INFO | trainer | Loaded model. Building datasets and dataloaders...
+2026-04-12 14:04:51,993 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/glue/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:04:52,621 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/nyu-mll/glue/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:04:53,255 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/api/resolve-cache/datasets/nyu-mll/glue/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/README.md "HTTP/1.1 200 OK"
+2026-04-12 14:04:53,881 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/glue.py "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:04:54,535 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/nyu-mll/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/glue.py "HTTP/1.1 404 Not Found"
+2026-04-12 14:04:55,300 | INFO | httpx | HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/glue/glue.py "HTTP/1.1 200 OK"
+2026-04-12 14:04:56,014 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/.huggingface.yaml "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:04:56,735 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/nyu-mll/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/.huggingface.yaml "HTTP/1.1 404 Not Found"
+2026-04-12 14:05:01,374 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/dataset_infos.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:05:02,160 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/nyu-mll/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/dataset_infos.json "HTTP/1.1 404 Not Found"
+2026-04-12 14:05:03,399 | INFO | trainer | Data ready | train_batches=230 | eval_batches=13 | calibration_batches=2
+trainable params: 887,042 || all params: 125,534,212 || trainable%: 0.7066
+2026-04-12 14:05:03,526 | INFO | trainer | Model wrapped with method=gadi_r and moved to device=cuda.
+2026-04-12 14:05:03,526 | INFO | trainer | Precision setup | amp_enabled=True | amp_dtype=torch.bfloat16 | allow_tf32=True
+2026-04-12 14:05:03,574 | INFO | trainer | Initializing method-specific state...
+2026-04-12 14:05:03,575 | INFO | GADIRMethod | LoRA-GA initialization started | calibration_batches=1
+2026-04-12 14:05:03,588 | INFO | gradient_collector | Collecting gradients | batches=1 | mode=train | lora_layers=24
+2026-04-12 14:05:03,629 | INFO | gradient_collector | Gradient collection progress | batch=1/1 | loss=0.6810
+2026-04-12 14:05:03,633 | INFO | gradient_collector | Finished gradient collection for 24 layers.
+2026-04-12 14:05:03,633 | INFO | GADIRMethod | LoRA-GA initialization collected gradients for 24 layers. Building low-rank factors...
+2026-04-12 14:05:03,702 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=1 | latest_layer=base_model.model.roberta.encoder.layer.0.attention.self.query
+2026-04-12 14:05:03,906 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=4 | latest_layer=base_model.model.roberta.encoder.layer.1.attention.self.value
+2026-04-12 14:05:04,156 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=8 | latest_layer=base_model.model.roberta.encoder.layer.3.attention.self.value
+2026-04-12 14:05:04,411 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=12 | latest_layer=base_model.model.roberta.encoder.layer.5.attention.self.value
+2026-04-12 14:05:04,664 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=16 | latest_layer=base_model.model.roberta.encoder.layer.7.attention.self.value
+2026-04-12 14:05:04,919 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=20 | latest_layer=base_model.model.roberta.encoder.layer.9.attention.self.value
+2026-04-12 14:05:05,224 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=24 | latest_layer=base_model.model.roberta.encoder.layer.11.attention.self.value
+2026-04-12 14:05:05,224 | INFO | GADIRMethod | LoRA-GA initialization refreshed 24 LoRA layers.
+2026-04-12 14:05:05,224 | INFO | trainer | Initialization finished in 1.65 seconds.
+2026-04-12 14:05:05,225 | INFO | trainer | Starting training for 230 optimizer steps on device=cuda.
+2026-04-12 14:05:05,336 | INFO | trainer | heartbeat step=1/230 | latest_loss=0.7271 | elapsed=0.1s
+2026-04-12 14:05:05,971 | INFO | trainer | step=20/230 | train_loss=0.6605
+2026-04-12 14:05:06,623 | INFO | trainer | step=40/230 | train_loss=0.6148
+2026-04-12 14:05:06,623 | INFO | trainer | Starting evaluation at step=40...
+2026-04-12 14:05:07,003 | INFO | trainer | Completed evaluation at step=40 | eval={'loss': 0.6224056891366547, 'accuracy': 0.6838235294117647}
+2026-04-12 14:05:07,622 | INFO | trainer | step=60/230 | train_loss=0.6533
+2026-04-12 14:05:08,226 | INFO | trainer | step=80/230 | train_loss=0.5995
+2026-04-12 14:05:08,226 | INFO | trainer | Starting evaluation at step=80...
+2026-04-12 14:05:08,551 | INFO | trainer | Completed evaluation at step=80 | eval={'loss': 0.6150417099980747, 'accuracy': 0.6838235294117647}
+2026-04-12 14:05:09,159 | INFO | trainer | step=100/230 | train_loss=0.6197
+2026-04-12 14:05:09,771 | INFO | DynamicRebaser | GADI-R drift check triggered at step=120 | calibration_batches=4
+2026-04-12 14:05:09,774 | INFO | gradient_collector | Collecting gradients | batches=4 | mode=eval | lora_layers=24
+2026-04-12 14:05:09,802 | INFO | gradient_collector | Gradient collection progress | batch=1/4 | loss=0.6820
+2026-04-12 14:05:09,831 | INFO | gradient_collector | Gradient collection progress | batch=2/4 | loss=0.5728
+2026-04-12 14:05:09,859 | INFO | gradient_collector | Gradient collection progress | batch=3/4 | loss=0.6820
+2026-04-12 14:05:09,887 | INFO | gradient_collector | Gradient collection progress | batch=4/4 | loss=0.5728
+2026-04-12 14:05:09,890 | INFO | gradient_collector | Finished gradient collection for 24 layers.
+2026-04-12 14:05:09,912 | INFO | DynamicRebaser | GADI-R drift summary at step=120 | max_score=0.8021 | threshold=0.0300
+2026-04-12 14:05:09,913 | INFO | DynamicRebaser | GADI-R selected layers at step=120: base_model.model.roberta.encoder.layer.0.attention.self.query, base_model.model.roberta.encoder.layer.1.attention.self.query
+2026-04-12 14:05:10,089 | INFO | DynamicRebaser | GADI-R re-based 2 layers at step 120 (count=1): base_model.model.roberta.encoder.layer.0.attention.self.query, base_model.model.roberta.encoder.layer.1.attention.self.query
+2026-04-12 14:05:10,089 | INFO | trainer | step=120/230 | train_loss=0.5403
+2026-04-12 14:05:10,089 | INFO | trainer | Starting evaluation at step=120...
+2026-04-12 14:05:10,410 | INFO | trainer | Completed evaluation at step=120 | eval={'loss': 0.49853018861190945, 'accuracy': 0.7156862745098039}
+2026-04-12 14:05:11,015 | INFO | trainer | step=140/230 | train_loss=0.4859
+2026-04-12 14:05:11,613 | INFO | trainer | step=160/230 | train_loss=0.4625
+2026-04-12 14:05:11,613 | INFO | trainer | Starting evaluation at step=160...
+2026-04-12 14:05:11,940 | INFO | trainer | Completed evaluation at step=160 | eval={'loss': 0.4715197951185937, 'accuracy': 0.7450980392156863}
+2026-04-12 14:05:12,589 | INFO | trainer | step=180/230 | train_loss=0.4881
+2026-04-12 14:05:13,212 | INFO | trainer | step=200/230 | train_loss=0.4734
+2026-04-12 14:05:13,212 | INFO | trainer | Starting evaluation at step=200...
+2026-04-12 14:05:13,538 | INFO | trainer | Completed evaluation at step=200 | eval={'loss': 0.42095551186916874, 'accuracy': 0.7941176470588235}
+2026-04-12 14:05:14,149 | INFO | trainer | step=220/230 | train_loss=0.4342
+2026-04-12 14:05:14,462 | INFO | trainer | Starting final evaluation...
+2026-04-12 14:05:14,789 | INFO | trainer | final_eval={'loss': 0.36899669293095083, 'accuracy': 0.8357843137254902}
+2026-04-12 14:05:14,789 | INFO | trainer | Saving model artifacts to /mnt/workspace/GADI/results/2026-04-12/roberta-base_MRPC_GADI-R多随机种子验证_A10/gadi_seed_42_140442/模型权重...
+2026-04-12 14:05:15,858 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+2026-04-12 14:05:16,335 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+2026-04-12 14:05:16,372 | INFO | trainer | Saved model artifacts to /mnt/workspace/GADI/results/2026-04-12/roberta-base_MRPC_GADI-R多随机种子验证_A10/gadi_seed_42_140442/模型权重
+2026-04-12 14:05:16,373 | INFO | gadir_seed_validation | Finished seed=42 | reused=False | final_accuracy=0.835784 | final_loss=0.368997
+2026-04-12 14:05:16,374 | INFO | gadir_seed_validation | Running GADI-R fixed-config seed=123
+2026-04-12 14:05:16,377 | INFO | trainer | Preparing run | method=gadi_r | seed=123 | model=roberta-base | dataset=glue/mrpc
+2026-04-12 14:05:16,377 | INFO | trainer | Loading model and tokenizer...
+2026-04-12 14:05:16,859 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+2026-04-12 14:05:17,340 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-04-12 14:05:17,599 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/models/roberta-base/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:05:17,855 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/models/FacebookAI/roberta-base/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-04-12 14:05:18,373 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/models/roberta-base/tree/main?recursive=true&expand=false "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:05:18,704 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/models/FacebookAI/roberta-base/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-04-12 14:05:19,364 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+2026-04-12 14:05:19,775 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+Loading weights:   0%|                                                                                              | 0/197 [00:00<?, ?it/s]Loading weights: 100%|██████████████████████████████████████████████████████████████████████████████████| 197/197 [00:00<00:00, 8501.33it/s]
+[1mRobertaForSequenceClassification LOAD REPORT[0m from: roberta-base
+Key                             | Status     | 
+--------------------------------+------------+-
+lm_head.bias                    | UNEXPECTED | 
+lm_head.layer_norm.weight       | UNEXPECTED | 
+roberta.embeddings.position_ids | UNEXPECTED | 
+lm_head.dense.weight            | UNEXPECTED | 
+lm_head.dense.bias              | UNEXPECTED | 
+lm_head.layer_norm.bias         | UNEXPECTED | 
+classifier.out_proj.weight      | MISSING    | 
+classifier.dense.weight         | MISSING    | 
+classifier.out_proj.bias        | MISSING    | 
+classifier.dense.bias           | MISSING    | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+2026-04-12 14:05:19,843 | INFO | trainer | Loaded model. Building datasets and dataloaders...
+2026-04-12 14:05:20,245 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/glue/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:05:20,670 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/nyu-mll/glue/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:05:21,545 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/api/resolve-cache/datasets/nyu-mll/glue/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/README.md "HTTP/1.1 200 OK"
+2026-04-12 14:05:22,049 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/glue.py "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:05:22,593 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/nyu-mll/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/glue.py "HTTP/1.1 404 Not Found"
+2026-04-12 14:05:23,384 | INFO | httpx | HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/glue/glue.py "HTTP/1.1 200 OK"
+2026-04-12 14:05:23,752 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/.huggingface.yaml "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:05:24,141 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/nyu-mll/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/.huggingface.yaml "HTTP/1.1 404 Not Found"
+2026-04-12 14:05:25,037 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/dataset_infos.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:05:25,549 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/nyu-mll/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/dataset_infos.json "HTTP/1.1 404 Not Found"
+2026-04-12 14:05:26,786 | INFO | trainer | Data ready | train_batches=230 | eval_batches=13 | calibration_batches=2
+trainable params: 887,042 || all params: 125,534,212 || trainable%: 0.7066
+2026-04-12 14:05:26,904 | INFO | trainer | Model wrapped with method=gadi_r and moved to device=cuda.
+2026-04-12 14:05:26,904 | INFO | trainer | Precision setup | amp_enabled=True | amp_dtype=torch.bfloat16 | allow_tf32=True
+2026-04-12 14:05:26,958 | INFO | trainer | Initializing method-specific state...
+2026-04-12 14:05:26,958 | INFO | GADIRMethod | LoRA-GA initialization started | calibration_batches=1
+2026-04-12 14:05:26,975 | INFO | gradient_collector | Collecting gradients | batches=1 | mode=train | lora_layers=24
+2026-04-12 14:05:27,015 | INFO | gradient_collector | Gradient collection progress | batch=1/1 | loss=0.7310
+2026-04-12 14:05:27,018 | INFO | gradient_collector | Finished gradient collection for 24 layers.
+2026-04-12 14:05:27,019 | INFO | GADIRMethod | LoRA-GA initialization collected gradients for 24 layers. Building low-rank factors...
+2026-04-12 14:05:27,087 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=1 | latest_layer=base_model.model.roberta.encoder.layer.0.attention.self.query
+2026-04-12 14:05:27,306 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=4 | latest_layer=base_model.model.roberta.encoder.layer.1.attention.self.value
+2026-04-12 14:05:27,558 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=8 | latest_layer=base_model.model.roberta.encoder.layer.3.attention.self.value
+2026-04-12 14:05:27,807 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=12 | latest_layer=base_model.model.roberta.encoder.layer.5.attention.self.value
+2026-04-12 14:05:28,061 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=16 | latest_layer=base_model.model.roberta.encoder.layer.7.attention.self.value
+2026-04-12 14:05:28,314 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=20 | latest_layer=base_model.model.roberta.encoder.layer.9.attention.self.value
+2026-04-12 14:05:28,617 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=24 | latest_layer=base_model.model.roberta.encoder.layer.11.attention.self.value
+2026-04-12 14:05:28,617 | INFO | GADIRMethod | LoRA-GA initialization refreshed 24 LoRA layers.
+2026-04-12 14:05:28,617 | INFO | trainer | Initialization finished in 1.66 seconds.
+2026-04-12 14:05:28,618 | INFO | trainer | Starting training for 230 optimizer steps on device=cuda.
+2026-04-12 14:05:28,729 | INFO | trainer | heartbeat step=1/230 | latest_loss=0.6615 | elapsed=0.1s
+2026-04-12 14:05:29,327 | INFO | trainer | step=20/230 | train_loss=0.6354
+2026-04-12 14:05:29,978 | INFO | trainer | step=40/230 | train_loss=0.6263
+2026-04-12 14:05:29,979 | INFO | trainer | Starting evaluation at step=40...
+2026-04-12 14:05:30,370 | INFO | trainer | Completed evaluation at step=40 | eval={'loss': 0.6209098474652159, 'accuracy': 0.6838235294117647}
+2026-04-12 14:05:30,980 | INFO | trainer | step=60/230 | train_loss=0.6139
+2026-04-12 14:05:31,595 | INFO | trainer | step=80/230 | train_loss=0.6065
+2026-04-12 14:05:31,595 | INFO | trainer | Starting evaluation at step=80...
+2026-04-12 14:05:31,925 | INFO | trainer | Completed evaluation at step=80 | eval={'loss': 0.6035677101097855, 'accuracy': 0.6838235294117647}
+2026-04-12 14:05:32,535 | INFO | trainer | step=100/230 | train_loss=0.6666
+2026-04-12 14:05:33,148 | INFO | DynamicRebaser | GADI-R drift check triggered at step=120 | calibration_batches=4
+2026-04-12 14:05:33,150 | INFO | gradient_collector | Collecting gradients | batches=4 | mode=eval | lora_layers=24
+2026-04-12 14:05:33,180 | INFO | gradient_collector | Gradient collection progress | batch=1/4 | loss=0.6982
+2026-04-12 14:05:33,210 | INFO | gradient_collector | Gradient collection progress | batch=2/4 | loss=0.8725
+2026-04-12 14:05:33,239 | INFO | gradient_collector | Gradient collection progress | batch=3/4 | loss=0.6982
+2026-04-12 14:05:33,267 | INFO | gradient_collector | Gradient collection progress | batch=4/4 | loss=0.8725
+2026-04-12 14:05:33,270 | INFO | gradient_collector | Finished gradient collection for 24 layers.
+2026-04-12 14:05:33,292 | INFO | DynamicRebaser | GADI-R drift summary at step=120 | max_score=0.4588 | threshold=0.0300
+2026-04-12 14:05:33,292 | INFO | DynamicRebaser | GADI-R selected layers at step=120: base_model.model.roberta.encoder.layer.1.attention.self.query, base_model.model.roberta.encoder.layer.0.attention.self.query
+2026-04-12 14:05:33,474 | INFO | DynamicRebaser | GADI-R re-based 2 layers at step 120 (count=1): base_model.model.roberta.encoder.layer.1.attention.self.query, base_model.model.roberta.encoder.layer.0.attention.self.query
+2026-04-12 14:05:33,475 | INFO | trainer | step=120/230 | train_loss=0.5716
+2026-04-12 14:05:33,475 | INFO | trainer | Starting evaluation at step=120...
+2026-04-12 14:05:33,803 | INFO | trainer | Completed evaluation at step=120 | eval={'loss': 0.6098845244622698, 'accuracy': 0.6911764705882353}
+2026-04-12 14:05:34,417 | INFO | trainer | step=140/230 | train_loss=0.5756
+2026-04-12 14:05:35,027 | INFO | trainer | step=160/230 | train_loss=0.5039
+2026-04-12 14:05:35,028 | INFO | trainer | Starting evaluation at step=160...
+2026-04-12 14:05:35,352 | INFO | trainer | Completed evaluation at step=160 | eval={'loss': 0.4949053128560384, 'accuracy': 0.7352941176470589}
+2026-04-12 14:05:35,971 | INFO | trainer | step=180/230 | train_loss=0.4839
+2026-04-12 14:05:36,580 | INFO | trainer | step=200/230 | train_loss=0.5647
+2026-04-12 14:05:36,580 | INFO | trainer | Starting evaluation at step=200...
+2026-04-12 14:05:36,907 | INFO | trainer | Completed evaluation at step=200 | eval={'loss': 0.4827040124173258, 'accuracy': 0.7058823529411765}
+2026-04-12 14:05:37,502 | INFO | trainer | step=220/230 | train_loss=0.4793
+2026-04-12 14:05:37,795 | INFO | trainer | Starting final evaluation...
+2026-04-12 14:05:38,125 | INFO | trainer | final_eval={'loss': 0.39605821581447825, 'accuracy': 0.8186274509803921}
+2026-04-12 14:05:38,125 | INFO | trainer | Saving model artifacts to /mnt/workspace/GADI/results/2026-04-12/roberta-base_MRPC_GADI-R多随机种子验证_A10/gadi_seed_123_140516/模型权重...
+2026-04-12 14:05:38,842 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+2026-04-12 14:05:39,212 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+2026-04-12 14:05:39,250 | INFO | trainer | Saved model artifacts to /mnt/workspace/GADI/results/2026-04-12/roberta-base_MRPC_GADI-R多随机种子验证_A10/gadi_seed_123_140516/模型权重
+2026-04-12 14:05:39,251 | INFO | gadir_seed_validation | Finished seed=123 | reused=False | final_accuracy=0.818627 | final_loss=0.396058
+2026-04-12 14:05:39,252 | INFO | gadir_seed_validation | Running GADI-R fixed-config seed=3407
+2026-04-12 14:05:39,255 | INFO | trainer | Preparing run | method=gadi_r | seed=3407 | model=roberta-base | dataset=glue/mrpc
+2026-04-12 14:05:39,255 | INFO | trainer | Loading model and tokenizer...
+2026-04-12 14:05:39,587 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+2026-04-12 14:05:39,965 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-04-12 14:05:40,182 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/models/roberta-base/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:05:40,392 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/models/FacebookAI/roberta-base/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-04-12 14:05:41,221 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/models/roberta-base/tree/main?recursive=true&expand=false "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:05:41,343 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/models/FacebookAI/roberta-base/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-04-12 14:05:42,826 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+2026-04-12 14:05:43,155 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+Loading weights:   0%|                                                                                              | 0/197 [00:00<?, ?it/s]Loading weights: 100%|██████████████████████████████████████████████████████████████████████████████████| 197/197 [00:00<00:00, 8335.80it/s]
+[1mRobertaForSequenceClassification LOAD REPORT[0m from: roberta-base
+Key                             | Status     | 
+--------------------------------+------------+-
+lm_head.bias                    | UNEXPECTED | 
+lm_head.layer_norm.weight       | UNEXPECTED | 
+roberta.embeddings.position_ids | UNEXPECTED | 
+lm_head.dense.weight            | UNEXPECTED | 
+lm_head.dense.bias              | UNEXPECTED | 
+lm_head.layer_norm.bias         | UNEXPECTED | 
+classifier.out_proj.weight      | MISSING    | 
+classifier.dense.weight         | MISSING    | 
+classifier.out_proj.bias        | MISSING    | 
+classifier.dense.bias           | MISSING    | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+2026-04-12 14:05:43,225 | INFO | trainer | Loaded model. Building datasets and dataloaders...
+2026-04-12 14:05:43,543 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/glue/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:05:43,896 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/nyu-mll/glue/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:05:44,147 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/api/resolve-cache/datasets/nyu-mll/glue/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/README.md "HTTP/1.1 200 OK"
+2026-04-12 14:05:44,479 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/glue.py "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:05:44,795 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/nyu-mll/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/glue.py "HTTP/1.1 404 Not Found"
+2026-04-12 14:05:45,562 | INFO | httpx | HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/glue/glue.py "HTTP/1.1 200 OK"
+2026-04-12 14:05:45,936 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/.huggingface.yaml "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:05:46,263 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/nyu-mll/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/.huggingface.yaml "HTTP/1.1 404 Not Found"
+2026-04-12 14:05:46,915 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/dataset_infos.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:05:47,242 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/nyu-mll/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/dataset_infos.json "HTTP/1.1 404 Not Found"
+Exception in thread QueueFeederThread:
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/multiprocessing/queues.py", line 239, in _feed
+    reader_close()
+  File "/usr/local/lib/python3.11/multiprocessing/connection.py", line 178, in close
+    self._close()
+  File "/usr/local/lib/python3.11/multiprocessing/connection.py", line 377, in _close
+    _close(self._handle)
+OSError: [Errno 9] Bad file descriptor
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/threading.py", line 1045, in _bootstrap_inner
+    self.run()
+  File "/usr/local/lib/python3.11/threading.py", line 982, in run
+    self._target(*self._args, **self._kwargs)
+  File "/usr/local/lib/python3.11/multiprocessing/queues.py", line 271, in _feed
+    queue_sem.release()
+ValueError: semaphore or lock released too many times
+2026-04-12 14:07:28,865 | INFO | trainer | Data ready | train_batches=230 | eval_batches=13 | calibration_batches=2
+trainable params: 887,042 || all params: 125,534,212 || trainable%: 0.7066
+2026-04-12 14:07:28,980 | INFO | trainer | Model wrapped with method=gadi_r and moved to device=cuda.
+2026-04-12 14:07:28,980 | INFO | trainer | Precision setup | amp_enabled=True | amp_dtype=torch.bfloat16 | allow_tf32=True
+2026-04-12 14:07:29,030 | INFO | trainer | Initializing method-specific state...
+2026-04-12 14:07:29,031 | INFO | GADIRMethod | LoRA-GA initialization started | calibration_batches=1
+2026-04-12 14:07:29,043 | INFO | gradient_collector | Collecting gradients | batches=1 | mode=train | lora_layers=24
+2026-04-12 14:07:29,086 | INFO | gradient_collector | Gradient collection progress | batch=1/1 | loss=0.7233
+2026-04-12 14:07:29,090 | INFO | gradient_collector | Finished gradient collection for 24 layers.
+2026-04-12 14:07:29,091 | INFO | GADIRMethod | LoRA-GA initialization collected gradients for 24 layers. Building low-rank factors...
+2026-04-12 14:07:29,160 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=1 | latest_layer=base_model.model.roberta.encoder.layer.0.attention.self.query
+2026-04-12 14:07:29,366 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=4 | latest_layer=base_model.model.roberta.encoder.layer.1.attention.self.value
+2026-04-12 14:07:29,620 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=8 | latest_layer=base_model.model.roberta.encoder.layer.3.attention.self.value
+2026-04-12 14:07:29,874 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=12 | latest_layer=base_model.model.roberta.encoder.layer.5.attention.self.value
+2026-04-12 14:07:30,129 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=16 | latest_layer=base_model.model.roberta.encoder.layer.7.attention.self.value
+2026-04-12 14:07:30,383 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=20 | latest_layer=base_model.model.roberta.encoder.layer.9.attention.self.value
+2026-04-12 14:07:30,702 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=24 | latest_layer=base_model.model.roberta.encoder.layer.11.attention.self.value
+2026-04-12 14:07:30,703 | INFO | GADIRMethod | LoRA-GA initialization refreshed 24 LoRA layers.
+2026-04-12 14:07:30,703 | INFO | trainer | Initialization finished in 1.67 seconds.
+2026-04-12 14:07:30,704 | INFO | trainer | Starting training for 230 optimizer steps on device=cuda.
+2026-04-12 14:07:30,824 | INFO | trainer | heartbeat step=1/230 | latest_loss=0.6504 | elapsed=0.1s
+2026-04-12 14:07:31,464 | INFO | trainer | step=20/230 | train_loss=0.6348
+2026-04-12 14:07:32,118 | INFO | trainer | step=40/230 | train_loss=0.5947
+2026-04-12 14:07:32,119 | INFO | trainer | Starting evaluation at step=40...
+2026-04-12 14:07:32,509 | INFO | trainer | Completed evaluation at step=40 | eval={'loss': 0.6220271493874344, 'accuracy': 0.6838235294117647}
+2026-04-12 14:07:33,165 | INFO | trainer | step=60/230 | train_loss=0.6469
+2026-04-12 14:07:33,806 | INFO | trainer | step=80/230 | train_loss=0.6174
+2026-04-12 14:07:33,806 | INFO | trainer | Starting evaluation at step=80...
+2026-04-12 14:07:34,135 | INFO | trainer | Completed evaluation at step=80 | eval={'loss': 0.6099622682029125, 'accuracy': 0.6838235294117647}
+2026-04-12 14:07:34,749 | INFO | trainer | step=100/230 | train_loss=0.6047
+2026-04-12 14:07:35,368 | INFO | DynamicRebaser | GADI-R drift check triggered at step=120 | calibration_batches=4
+2026-04-12 14:07:35,370 | INFO | gradient_collector | Collecting gradients | batches=4 | mode=eval | lora_layers=24
+2026-04-12 14:07:35,399 | INFO | gradient_collector | Gradient collection progress | batch=1/4 | loss=0.6893
+2026-04-12 14:07:35,428 | INFO | gradient_collector | Gradient collection progress | batch=2/4 | loss=0.6281
+2026-04-12 14:07:35,457 | INFO | gradient_collector | Gradient collection progress | batch=3/4 | loss=0.6893
+2026-04-12 14:07:35,486 | INFO | gradient_collector | Gradient collection progress | batch=4/4 | loss=0.6281
+2026-04-12 14:07:35,490 | INFO | gradient_collector | Finished gradient collection for 24 layers.
+2026-04-12 14:07:35,512 | INFO | DynamicRebaser | GADI-R drift summary at step=120 | max_score=0.6830 | threshold=0.0300
+2026-04-12 14:07:35,512 | INFO | DynamicRebaser | GADI-R selected layers at step=120: base_model.model.roberta.encoder.layer.0.attention.self.query, base_model.model.roberta.encoder.layer.0.attention.self.value
+2026-04-12 14:07:35,710 | INFO | DynamicRebaser | GADI-R re-based 2 layers at step 120 (count=1): base_model.model.roberta.encoder.layer.0.attention.self.query, base_model.model.roberta.encoder.layer.0.attention.self.value
+2026-04-12 14:07:35,710 | INFO | trainer | step=120/230 | train_loss=0.5819
+2026-04-12 14:07:35,710 | INFO | trainer | Starting evaluation at step=120...
+2026-04-12 14:07:36,041 | INFO | trainer | Completed evaluation at step=120 | eval={'loss': 0.5382911732383803, 'accuracy': 0.7083333333333334}
+2026-04-12 14:07:36,654 | INFO | trainer | step=140/230 | train_loss=0.6335
+2026-04-12 14:07:37,277 | INFO | trainer | step=160/230 | train_loss=0.5951
+2026-04-12 14:07:37,277 | INFO | trainer | Starting evaluation at step=160...
+2026-04-12 14:07:37,608 | INFO | trainer | Completed evaluation at step=160 | eval={'loss': 0.5448056395147362, 'accuracy': 0.7058823529411765}
+2026-04-12 14:07:38,229 | INFO | trainer | step=180/230 | train_loss=0.5409
+2026-04-12 14:07:38,843 | INFO | trainer | step=200/230 | train_loss=0.5222
+2026-04-12 14:07:38,843 | INFO | trainer | Starting evaluation at step=200...
+2026-04-12 14:07:39,178 | INFO | trainer | Completed evaluation at step=200 | eval={'loss': 0.4754914869280422, 'accuracy': 0.7524509803921569}
+2026-04-12 14:07:39,800 | INFO | trainer | step=220/230 | train_loss=0.4660
+2026-04-12 14:07:40,112 | INFO | trainer | Starting final evaluation...
+2026-04-12 14:07:40,445 | INFO | trainer | final_eval={'loss': 0.44982601322379767, 'accuracy': 0.7647058823529411}
+2026-04-12 14:07:40,445 | INFO | trainer | Saving model artifacts to /mnt/workspace/GADI/results/2026-04-12/roberta-base_MRPC_GADI-R多随机种子验证_A10/gadi_seed_3407_140539/模型权重...
+2026-04-12 14:07:41,867 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+2026-04-12 14:07:43,181 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+2026-04-12 14:07:43,226 | INFO | trainer | Saved model artifacts to /mnt/workspace/GADI/results/2026-04-12/roberta-base_MRPC_GADI-R多随机种子验证_A10/gadi_seed_3407_140539/模型权重
+2026-04-12 14:07:43,316 | INFO | gadir_seed_validation | Finished seed=3407 | reused=False | final_accuracy=0.764706 | final_loss=0.449826
+2026-04-12 14:07:43,317 | INFO | gadir_seed_validation | Running GADI-R fixed-config seed=2026
+2026-04-12 14:07:43,320 | INFO | trainer | Preparing run | method=gadi_r | seed=2026 | model=roberta-base | dataset=glue/mrpc
+2026-04-12 14:07:43,320 | INFO | trainer | Loading model and tokenizer...
+2026-04-12 14:07:43,977 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+2026-04-12 14:07:44,595 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-04-12 14:07:46,533 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/models/roberta-base/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:07:47,381 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/models/FacebookAI/roberta-base/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-04-12 14:07:47,748 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/models/roberta-base/tree/main?recursive=true&expand=false "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:07:48,101 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/models/FacebookAI/roberta-base/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-04-12 14:07:48,958 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+2026-04-12 14:07:49,454 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+Loading weights:   0%|                                                                                              | 0/197 [00:00<?, ?it/s]Loading weights: 100%|██████████████████████████████████████████████████████████████████████████████████| 197/197 [00:00<00:00, 8598.37it/s]
+[1mRobertaForSequenceClassification LOAD REPORT[0m from: roberta-base
+Key                             | Status     | 
+--------------------------------+------------+-
+lm_head.bias                    | UNEXPECTED | 
+lm_head.layer_norm.weight       | UNEXPECTED | 
+roberta.embeddings.position_ids | UNEXPECTED | 
+lm_head.dense.weight            | UNEXPECTED | 
+lm_head.dense.bias              | UNEXPECTED | 
+lm_head.layer_norm.bias         | UNEXPECTED | 
+classifier.out_proj.weight      | MISSING    | 
+classifier.dense.weight         | MISSING    | 
+classifier.out_proj.bias        | MISSING    | 
+classifier.dense.bias           | MISSING    | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+2026-04-12 14:07:49,519 | INFO | trainer | Loaded model. Building datasets and dataloaders...
+2026-04-12 14:07:50,034 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/glue/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:07:50,521 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/nyu-mll/glue/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:07:50,928 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/api/resolve-cache/datasets/nyu-mll/glue/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/README.md "HTTP/1.1 200 OK"
+2026-04-12 14:07:51,357 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/glue.py "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:07:51,823 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/nyu-mll/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/glue.py "HTTP/1.1 404 Not Found"
+2026-04-12 14:07:52,613 | INFO | httpx | HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/glue/glue.py "HTTP/1.1 200 OK"
+2026-04-12 14:07:53,374 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/.huggingface.yaml "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:07:54,089 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/nyu-mll/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/.huggingface.yaml "HTTP/1.1 404 Not Found"
+2026-04-12 14:07:55,419 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/dataset_infos.json "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 14:07:55,962 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/datasets/nyu-mll/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/dataset_infos.json "HTTP/1.1 404 Not Found"
+2026-04-12 14:07:57,223 | INFO | trainer | Data ready | train_batches=230 | eval_batches=13 | calibration_batches=2
+trainable params: 887,042 || all params: 125,534,212 || trainable%: 0.7066
+2026-04-12 14:07:57,338 | INFO | trainer | Model wrapped with method=gadi_r and moved to device=cuda.
+2026-04-12 14:07:57,338 | INFO | trainer | Precision setup | amp_enabled=True | amp_dtype=torch.bfloat16 | allow_tf32=True
+2026-04-12 14:07:57,390 | INFO | trainer | Initializing method-specific state...
+2026-04-12 14:07:57,390 | INFO | GADIRMethod | LoRA-GA initialization started | calibration_batches=1
+2026-04-12 14:07:57,402 | INFO | gradient_collector | Collecting gradients | batches=1 | mode=train | lora_layers=24
+2026-04-12 14:07:57,444 | INFO | gradient_collector | Gradient collection progress | batch=1/1 | loss=0.6837
+2026-04-12 14:07:57,448 | INFO | gradient_collector | Finished gradient collection for 24 layers.
+2026-04-12 14:07:57,449 | INFO | GADIRMethod | LoRA-GA initialization collected gradients for 24 layers. Building low-rank factors...
+2026-04-12 14:07:57,525 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=1 | latest_layer=base_model.model.roberta.encoder.layer.0.attention.self.query
+2026-04-12 14:07:57,747 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=4 | latest_layer=base_model.model.roberta.encoder.layer.1.attention.self.value
+2026-04-12 14:07:57,999 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=8 | latest_layer=base_model.model.roberta.encoder.layer.3.attention.self.value
+2026-04-12 14:07:58,251 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=12 | latest_layer=base_model.model.roberta.encoder.layer.5.attention.self.value
+2026-04-12 14:07:58,506 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=16 | latest_layer=base_model.model.roberta.encoder.layer.7.attention.self.value
+2026-04-12 14:07:58,758 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=20 | latest_layer=base_model.model.roberta.encoder.layer.9.attention.self.value
+2026-04-12 14:07:59,066 | INFO | GADIRMethod | LoRA-GA initialization progress | updated_layers=24 | latest_layer=base_model.model.roberta.encoder.layer.11.attention.self.value
+2026-04-12 14:07:59,066 | INFO | GADIRMethod | LoRA-GA initialization refreshed 24 LoRA layers.
+2026-04-12 14:07:59,067 | INFO | trainer | Initialization finished in 1.68 seconds.
+2026-04-12 14:07:59,068 | INFO | trainer | Starting training for 230 optimizer steps on device=cuda.
+2026-04-12 14:07:59,181 | INFO | trainer | heartbeat step=1/230 | latest_loss=0.6941 | elapsed=0.1s
+2026-04-12 14:07:59,793 | INFO | trainer | step=20/230 | train_loss=0.6242
+2026-04-12 14:08:00,404 | INFO | trainer | step=40/230 | train_loss=0.6199
+2026-04-12 14:08:00,404 | INFO | trainer | Starting evaluation at step=40...
+2026-04-12 14:08:00,795 | INFO | trainer | Completed evaluation at step=40 | eval={'loss': 0.6186181973008549, 'accuracy': 0.6838235294117647}
+2026-04-12 14:08:01,406 | INFO | trainer | step=60/230 | train_loss=0.6428
+2026-04-12 14:08:02,012 | INFO | trainer | step=80/230 | train_loss=0.6163
+2026-04-12 14:08:02,012 | INFO | trainer | Starting evaluation at step=80...
+2026-04-12 14:08:02,342 | INFO | trainer | Completed evaluation at step=80 | eval={'loss': 0.6054394303583631, 'accuracy': 0.6838235294117647}
+2026-04-12 14:08:02,954 | INFO | trainer | step=100/230 | train_loss=0.5750
+2026-04-12 14:08:03,563 | INFO | DynamicRebaser | GADI-R drift check triggered at step=120 | calibration_batches=4
+2026-04-12 14:08:03,565 | INFO | gradient_collector | Collecting gradients | batches=4 | mode=eval | lora_layers=24
+2026-04-12 14:08:03,594 | INFO | gradient_collector | Gradient collection progress | batch=1/4 | loss=0.6326
+2026-04-12 14:08:03,623 | INFO | gradient_collector | Gradient collection progress | batch=2/4 | loss=0.6797
+2026-04-12 14:08:03,651 | INFO | gradient_collector | Gradient collection progress | batch=3/4 | loss=0.6326
+2026-04-12 14:08:03,679 | INFO | gradient_collector | Gradient collection progress | batch=4/4 | loss=0.6797
+2026-04-12 14:08:03,683 | INFO | gradient_collector | Finished gradient collection for 24 layers.
+2026-04-12 14:08:03,706 | INFO | DynamicRebaser | GADI-R drift summary at step=120 | max_score=0.6457 | threshold=0.0300
+2026-04-12 14:08:03,706 | INFO | DynamicRebaser | GADI-R selected layers at step=120: base_model.model.roberta.encoder.layer.0.attention.self.query, base_model.model.roberta.encoder.layer.0.attention.self.value
+2026-04-12 14:08:03,908 | INFO | DynamicRebaser | GADI-R re-based 2 layers at step 120 (count=1): base_model.model.roberta.encoder.layer.0.attention.self.query, base_model.model.roberta.encoder.layer.0.attention.self.value
+2026-04-12 14:08:03,908 | INFO | trainer | step=120/230 | train_loss=0.6060
+2026-04-12 14:08:03,908 | INFO | trainer | Starting evaluation at step=120...
+2026-04-12 14:08:04,233 | INFO | trainer | Completed evaluation at step=120 | eval={'loss': 0.5623185611238667, 'accuracy': 0.7132352941176471}
+2026-04-12 14:08:04,840 | INFO | trainer | step=140/230 | train_loss=0.5967
+2026-04-12 14:08:05,442 | INFO | trainer | step=160/230 | train_loss=0.5631
+2026-04-12 14:08:05,442 | INFO | trainer | Starting evaluation at step=160...
+2026-04-12 14:08:05,775 | INFO | trainer | Completed evaluation at step=160 | eval={'loss': 0.5005458938140496, 'accuracy': 0.7647058823529411}
+2026-04-12 14:08:06,385 | INFO | trainer | step=180/230 | train_loss=0.4994
+2026-04-12 14:08:06,978 | INFO | trainer | step=200/230 | train_loss=0.5246
+2026-04-12 14:08:06,978 | INFO | trainer | Starting evaluation at step=200...
+2026-04-12 14:08:07,310 | INFO | trainer | Completed evaluation at step=200 | eval={'loss': 0.4601691803511451, 'accuracy': 0.7696078431372549}
+2026-04-12 14:08:07,894 | INFO | trainer | step=220/230 | train_loss=0.4738
+2026-04-12 14:08:08,186 | INFO | trainer | Starting final evaluation...
+2026-04-12 14:08:08,512 | INFO | trainer | final_eval={'loss': 0.5124069005250931, 'accuracy': 0.7622549019607843}
+2026-04-12 14:08:08,512 | INFO | trainer | Saving model artifacts to /mnt/workspace/GADI/results/2026-04-12/roberta-base_MRPC_GADI-R多随机种子验证_A10/gadi_seed_2026_140743/模型权重...
+2026-04-12 14:08:10,374 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+2026-04-12 14:08:11,161 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+2026-04-12 14:08:11,201 | INFO | trainer | Saved model artifacts to /mnt/workspace/GADI/results/2026-04-12/roberta-base_MRPC_GADI-R多随机种子验证_A10/gadi_seed_2026_140743/模型权重
+2026-04-12 14:08:11,294 | INFO | gadir_seed_validation | Finished seed=2026 | reused=False | final_accuracy=0.762255 | final_loss=0.512407
+2026-04-12 14:08:11,294 | INFO | gadir_seed_validation | Finished GADI-R multi-seed validation. Summary directory: /mnt/workspace/GADI/results/2026-04-12/roberta-base_MRPC_GADI-R多随机种子验证_A10

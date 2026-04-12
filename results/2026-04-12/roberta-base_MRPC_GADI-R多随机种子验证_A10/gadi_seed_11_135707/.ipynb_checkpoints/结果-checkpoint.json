@@ -1,0 +1,187 @@
+{
+  "method": "GADI-R",
+  "seed": 11,
+  "metrics": {
+    "loss": 0.39458415379711226,
+    "accuracy": 0.8382352941176471,
+    "train_history": [
+      {
+        "step": 20,
+        "train_loss": 0.6380813598632813
+      },
+      {
+        "step": 40,
+        "train_loss": 0.6587493896484375
+      },
+      {
+        "step": 60,
+        "train_loss": 0.61326904296875
+      },
+      {
+        "step": 80,
+        "train_loss": 0.618389892578125
+      },
+      {
+        "step": 100,
+        "train_loss": 0.583636474609375
+      },
+      {
+        "step": 120,
+        "train_loss": 0.633416748046875
+      },
+      {
+        "step": 140,
+        "train_loss": 0.58763427734375
+      },
+      {
+        "step": 160,
+        "train_loss": 0.553326416015625
+      },
+      {
+        "step": 180,
+        "train_loss": 0.5134075164794922
+      },
+      {
+        "step": 200,
+        "train_loss": 0.45318307876586916
+      },
+      {
+        "step": 220,
+        "train_loss": 0.4433614730834961
+      }
+    ],
+    "eval_history": [
+      {
+        "step": 40,
+        "loss": 0.627074681076349,
+        "accuracy": 0.6838235294117647
+      },
+      {
+        "step": 80,
+        "loss": 0.6072227814618278,
+        "accuracy": 0.6838235294117647
+      },
+      {
+        "step": 120,
+        "loss": 0.5769429288658441,
+        "accuracy": 0.7107843137254902
+      },
+      {
+        "step": 160,
+        "loss": 0.4714698996029648,
+        "accuracy": 0.7745098039215687
+      },
+      {
+        "step": 200,
+        "loss": 0.41396267741334203,
+        "accuracy": 0.8088235294117647
+      }
+    ],
+    "total_steps": 230,
+    "method_artifacts": {
+      "rebase_history": [
+        {
+          "step": 120,
+          "refreshed_layers": [
+            "base_model.model.roberta.encoder.layer.0.attention.self.query",
+            "base_model.model.roberta.encoder.layer.1.attention.self.query"
+          ],
+          "scores": {
+            "base_model.model.roberta.encoder.layer.0.attention.self.query": 0.7420694231987,
+            "base_model.model.roberta.encoder.layer.0.attention.self.value": 0.5943313241004944,
+            "base_model.model.roberta.encoder.layer.1.attention.self.query": 0.6081557869911194,
+            "base_model.model.roberta.encoder.layer.1.attention.self.value": 0.25467541813850403,
+            "base_model.model.roberta.encoder.layer.2.attention.self.query": 0.458020955324173,
+            "base_model.model.roberta.encoder.layer.2.attention.self.value": 0.14448508620262146,
+            "base_model.model.roberta.encoder.layer.3.attention.self.query": 0.4182713031768799,
+            "base_model.model.roberta.encoder.layer.3.attention.self.value": 0.17889392375946045,
+            "base_model.model.roberta.encoder.layer.4.attention.self.query": 0.3484802544116974,
+            "base_model.model.roberta.encoder.layer.4.attention.self.value": 0.18430863320827484,
+            "base_model.model.roberta.encoder.layer.5.attention.self.query": 0.33711865544319153,
+            "base_model.model.roberta.encoder.layer.5.attention.self.value": 0.20525841414928436,
+            "base_model.model.roberta.encoder.layer.6.attention.self.query": 0.4707005023956299,
+            "base_model.model.roberta.encoder.layer.6.attention.self.value": 0.21293151378631592,
+            "base_model.model.roberta.encoder.layer.7.attention.self.query": 0.35360732674598694,
+            "base_model.model.roberta.encoder.layer.7.attention.self.value": 0.24996167421340942,
+            "base_model.model.roberta.encoder.layer.8.attention.self.query": 0.34161585569381714,
+            "base_model.model.roberta.encoder.layer.8.attention.self.value": 0.18134400248527527,
+            "base_model.model.roberta.encoder.layer.9.attention.self.query": 0.4042688310146332,
+            "base_model.model.roberta.encoder.layer.9.attention.self.value": 0.2424098253250122,
+            "base_model.model.roberta.encoder.layer.10.attention.self.query": 0.3816158175468445,
+            "base_model.model.roberta.encoder.layer.10.attention.self.value": 0.21389245986938477,
+            "base_model.model.roberta.encoder.layer.11.attention.self.query": 0.19688236713409424,
+            "base_model.model.roberta.encoder.layer.11.attention.self.value": 0.2898039221763611
+          }
+        }
+      ],
+      "rebase_count": 1
+    }
+  },
+  "elapsed_seconds": 455.2725354670001,
+  "config": {
+    "seed": 11,
+    "method": "gadi_r",
+    "model": {
+      "model_name_or_path": "roberta-base",
+      "task_type": "SEQ_CLS",
+      "num_labels": 2,
+      "target_modules": [
+        "query",
+        "value"
+      ],
+      "torch_dtype": null
+    },
+    "data": {
+      "dataset_name": "glue",
+      "dataset_config_name": "mrpc",
+      "max_length": 128,
+      "calibration_size": 32
+    },
+    "lora": {
+      "rank": 8,
+      "alpha": 16,
+      "dropout": 0.0,
+      "bias": "none",
+      "use_rslora": false,
+      "adapter_name": "default"
+    },
+    "lora_ga": {
+      "gamma": 16.0,
+      "calibration_batches": 1
+    },
+    "rebase": {
+      "enabled": true,
+      "interval_steps": 120,
+      "warmup_steps": 120,
+      "max_rebases": 1,
+      "drift_threshold": 0.03,
+      "topk_layers": 2,
+      "selection_strategy": "global_topk",
+      "calibration_batches": 4,
+      "use_residual_gradient": true,
+      "gradient_mix": 0.5,
+      "calibration_eval_mode": true,
+      "reset_optimizer_state": false
+    },
+    "optimizer": {
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0
+    },
+    "training": {
+      "output_dir": "/mnt/workspace/GADI/results/2026-04-12/roberta-base_MRPC_GADI-R多随机种子验证_A10/gadi_seed_11_135707/模型权重",
+      "train_batch_size": 16,
+      "eval_batch_size": 32,
+      "dataloader_num_workers": 4,
+      "pin_memory": true,
+      "persistent_workers": true,
+      "gradient_accumulation_steps": 1,
+      "num_epochs": 1,
+      "max_steps": null,
+      "log_every_steps": 20,
+      "eval_every_steps": 40,
+      "use_amp": true,
+      "amp_dtype": "bfloat16",
+      "allow_tf32": true
+    }
+  }
+}

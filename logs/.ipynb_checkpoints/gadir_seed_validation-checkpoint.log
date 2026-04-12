@@ -1,0 +1,28 @@
+nohup: ignoring input
+2026-04-12 13:57:07,621 | INFO | gadir_seed_validation | Starting multi-seed validation | config=configs/experiment/roberta_gadi_r_aliyun_a10.yaml | seeds=[11, 42, 123, 3407, 2026] | experiment_type=roberta-base_MRPC_GADI-R多随机种子验证_A10
+2026-04-12 13:57:07,625 | INFO | gadir_seed_validation | Reference baselines | LoRA=0.781863 | LoRA-GA=0.811275
+2026-04-12 13:57:07,625 | INFO | gadir_seed_validation | Running GADI-R fixed-config seed=11
+2026-04-12 13:57:07,646 | INFO | trainer | Preparing run | method=gadi_r | seed=11 | model=roberta-base | dataset=glue/mrpc
+2026-04-12 13:57:07,646 | INFO | trainer | Loading model and tokenizer...
+2026-04-12 13:57:09,789 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+2026-04-12 13:57:10,910 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+2026-04-12 13:57:11,281 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-04-12 13:57:11,629 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/roberta-base/resolve/main/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-04-12 13:57:12,837 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/models/roberta-base/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 13:57:13,014 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/models/FacebookAI/roberta-base/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-04-12 13:57:13,196 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/models/roberta-base/tree/main?recursive=true&expand=false "HTTP/1.1 307 Temporary Redirect"
+2026-04-12 13:57:13,388 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/api/models/FacebookAI/roberta-base/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-04-12 13:57:14,282 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/vocab.json "HTTP/1.1 200 OK"
+2026-04-12 13:57:14,786 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/roberta-base/resolve/main/vocab.json "HTTP/1.1 200 OK"
+2026-04-12 13:57:16,336 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/merges.txt "HTTP/1.1 200 OK"
+2026-04-12 13:57:16,734 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/roberta-base/resolve/main/merges.txt "HTTP/1.1 200 OK"
+2026-04-12 13:57:17,814 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/tokenizer.json "HTTP/1.1 200 OK"
+2026-04-12 13:57:18,482 | INFO | httpx | HTTP Request: GET https://hf-mirror.com/roberta-base/resolve/main/tokenizer.json "HTTP/1.1 200 OK"
+2026-04-12 13:57:20,294 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/added_tokens.json "HTTP/1.1 404 Not Found"
+2026-04-12 13:57:20,670 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/special_tokens_map.json "HTTP/1.1 404 Not Found"
+2026-04-12 13:57:21,084 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/chat_template.jinja "HTTP/1.1 404 Not Found"
+2026-04-12 13:57:21,675 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+2026-04-12 13:57:22,074 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/adapter_config.json "HTTP/1.1 404 Not Found"
+2026-04-12 13:57:22,409 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+2026-04-12 13:57:22,775 | INFO | httpx | HTTP Request: HEAD https://hf-mirror.com/roberta-base/resolve/main/model.safetensors "HTTP/1.1 302 Found"
+2026-04-12 13:57:23,083 | INFO | httpx | HTTP Request: GET https://cas-bridge.xethub.hf.co/xet-bridge-us/621ffdc036468d709f174350/bc535ab3097a56e20bcc503fc9284ea31b20020638626504e33ed18633920fda?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=cas%2F20260412%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260412T055722Z&X-Amz-Expires=3600&X-Amz-Signature=c4151e879937f129e19d64fc672d9dd8811a191c3d0a3977e1f21c92ce2177f7&X-Amz-SignedHeaders=host&X-Xet-Cas-Uid=62171e3b6a99db28e0b3159d&response-content-disposition=inline%3B+filename*%3DUTF-8%27%27model.safetensors%3B+filename%3D%22model.safetensors%22%3B&x-amz-checksum-mode=ENABLED&x-id=GetObject&Expires=1775977042&Policy=eyJTdGF0ZW1lbnQiOlt7IkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc3NTk3NzA0Mn19LCJSZXNvdXJjZSI6Imh0dHBzOi8vY2FzLWJyaWRnZS54ZXRodWIuaGYuY28veGV0LWJyaWRnZS11cy82MjFmZmRjMDM2NDY4ZDcwOWYxNzQzNTAvYmM1MzVhYjMwOTdhNTZlMjBiY2M1MDNmYzkyODRlYTMxYjIwMDIwNjM4NjI2NTA0ZTMzZWQxODYzMzkyMGZkYSoifV19&Signature=Xyr6n4N9uAj7cNqYfpTkdLStwFtmIqbSvEEreJsBzJD50k1jOCZkQxsMPCRTRMN50TVZVSkRMlGzflaQ1wLC%7EpNAXIVDzhRtMWM2%7E1-NNvL85zzZhpktwCC1-gsUjCvJfs5uezr4LRgUhd%7EAMUB60IeAjUVzDgd0SQMHBSvYzcR%7ECi7fqZlDiqIf7a3%7ElwiWa%7EZfXxjhJvWBY3EH9ydk-qyQisL9fnr%7E3kT2cX1aaGtE0inDTOH-j6%7EFbxfGIKK2H7kbe6z5KWyWTV7x8CGqmOPhKs9ftw996c8KHpIvyyRPZd23jIhTpulTca0zyzFWCoI9aR4svj5%7EcKUFP7DI%7Ew__&Key-Pair-Id=K2L8F4GPSG1IFC "HTTP/1.1 200 OK"

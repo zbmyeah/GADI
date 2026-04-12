@@ -1,0 +1,56 @@
+﻿seed: 11
+method: gadi_r
+model:
+  model_name_or_path: roberta-base
+  task_type: SEQ_CLS
+  num_labels: 2
+  target_modules:
+  - query
+  - value
+  torch_dtype: null
+data:
+  dataset_name: glue
+  dataset_config_name: mrpc
+  max_length: 128
+  calibration_size: 32
+lora:
+  rank: 8
+  alpha: 16
+  dropout: 0.0
+  bias: none
+  use_rslora: false
+  adapter_name: default
+lora_ga:
+  gamma: 16.0
+  calibration_batches: 1
+rebase:
+  enabled: true
+  interval_steps: 120
+  warmup_steps: 120
+  max_rebases: 1
+  drift_threshold: 0.03
+  topk_layers: 2
+  selection_strategy: global_topk
+  calibration_batches: 4
+  use_residual_gradient: true
+  gradient_mix: 0.5
+  calibration_eval_mode: true
+  reset_optimizer_state: false
+optimizer:
+  learning_rate: 0.0001
+  weight_decay: 0.0
+training:
+  output_dir: /mnt/workspace/GADI/results/2026-04-12/roberta-base_MRPC_GADI-R多随机种子验证_A10/gadi_seed_11_130920/模型权重
+  train_batch_size: 16
+  eval_batch_size: 32
+  dataloader_num_workers: 4
+  pin_memory: true
+  persistent_workers: true
+  gradient_accumulation_steps: 1
+  num_epochs: 1
+  max_steps: null
+  log_every_steps: 20
+  eval_every_steps: 40
+  use_amp: true
+  amp_dtype: bfloat16
+  allow_tf32: true

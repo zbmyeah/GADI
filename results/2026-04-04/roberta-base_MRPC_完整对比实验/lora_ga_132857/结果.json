@@ -1,0 +1,136 @@
+{
+  "method": "LoRA-GA",
+  "metrics": {
+    "loss": 0.39550918165375204,
+    "accuracy": 0.8112745098039216,
+    "train_history": [
+      {
+        "step": 20,
+        "train_loss": 0.6765953332185746
+      },
+      {
+        "step": 40,
+        "train_loss": 0.6591591835021973
+      },
+      {
+        "step": 60,
+        "train_loss": 0.6451497703790665
+      },
+      {
+        "step": 80,
+        "train_loss": 0.5601884216070175
+      },
+      {
+        "step": 100,
+        "train_loss": 0.6559773683547974
+      },
+      {
+        "step": 120,
+        "train_loss": 0.5734969943761825
+      },
+      {
+        "step": 140,
+        "train_loss": 0.5745163023471832
+      },
+      {
+        "step": 160,
+        "train_loss": 0.6022906750440598
+      },
+      {
+        "step": 180,
+        "train_loss": 0.5171892836689949
+      },
+      {
+        "step": 200,
+        "train_loss": 0.5319595202803612
+      },
+      {
+        "step": 220,
+        "train_loss": 0.5054072678089142
+      }
+    ],
+    "eval_history": [
+      {
+        "step": 40,
+        "loss": 0.6393046799828025,
+        "accuracy": 0.6838235294117647
+      },
+      {
+        "step": 80,
+        "loss": 0.6393340779285804,
+        "accuracy": 0.6838235294117647
+      },
+      {
+        "step": 120,
+        "loss": 0.6298498458722058,
+        "accuracy": 0.6911764705882353
+      },
+      {
+        "step": 160,
+        "loss": 0.5394391154541689,
+        "accuracy": 0.7205882352941176
+      },
+      {
+        "step": 200,
+        "loss": 0.4659072365246567,
+        "accuracy": 0.803921568627451
+      }
+    ],
+    "total_steps": 230
+  },
+  "elapsed_seconds": 1026.3109204000211,
+  "config": {
+    "seed": 42,
+    "method": "lora_ga",
+    "model": {
+      "model_name_or_path": "roberta-base",
+      "task_type": "SEQ_CLS",
+      "num_labels": 2,
+      "target_modules": [
+        "query",
+        "value"
+      ],
+      "torch_dtype": null
+    },
+    "data": {
+      "dataset_name": "glue",
+      "dataset_config_name": "mrpc",
+      "max_length": 128,
+      "calibration_size": 32
+    },
+    "lora": {
+      "rank": 8,
+      "alpha": 16,
+      "dropout": 0.0,
+      "bias": "none",
+      "use_rslora": false,
+      "adapter_name": "default"
+    },
+    "lora_ga": {
+      "gamma": 16.0,
+      "calibration_batches": 1
+    },
+    "rebase": {
+      "enabled": false,
+      "interval_steps": 200,
+      "drift_threshold": 0.15,
+      "topk_layers": 2,
+      "calibration_batches": 1,
+      "use_residual_gradient": true
+    },
+    "optimizer": {
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0
+    },
+    "training": {
+      "output_dir": "D:\\loRA-GA-Project\\results\\2026-04-04\\roberta-base_MRPC_完整对比实验\\lora_ga_132857\\模型权重",
+      "train_batch_size": 16,
+      "eval_batch_size": 32,
+      "gradient_accumulation_steps": 1,
+      "num_epochs": 1,
+      "max_steps": null,
+      "log_every_steps": 20,
+      "eval_every_steps": 40
+    }
+  }
+}

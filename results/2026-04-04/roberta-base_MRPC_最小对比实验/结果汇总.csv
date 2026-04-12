@@ -1,0 +1,4 @@
+﻿﻿method,loss,accuracy,elapsed_seconds,run_dir
+LoRA,0.6291900429071164,0.6838235294117647,196.77308579999954,D:\loRA-GA-Project\results\2026-04-04\roberta-base_MRPC_最小对比实验\lora_125512
+LoRA-GA,0.6322691615890054,0.6838235294117647,174.42301000002772,D:\loRA-GA-Project\results\2026-04-04\roberta-base_MRPC_最小对比实验\lora_ga_125829
+GADI-R,0.631408204050625,0.6838235294117647,179.8497574000503,D:\loRA-GA-Project\results\2026-04-04\roberta-base_MRPC_最小对比实验\gadi_r_130123
