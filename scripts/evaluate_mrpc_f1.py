@@ -3,9 +3,9 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import os
 import statistics
 import sys
-from dataclasses import asdict
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -20,7 +20,16 @@ SRC_PATH = PROJECT_ROOT / "src"
 if str(SRC_PATH) not in sys.path:
     sys.path.insert(0, str(SRC_PATH))
 
-from gadir.config import DataConfig, ExperimentConfig, LoraExperimentConfig, LoraGAConfig, ModelConfig, OptimizerConfig, RebaseConfig, TrainingConfig
+from gadir.config import (
+    DataConfig,
+    ExperimentConfig,
+    LoraExperimentConfig,
+    LoraGAConfig,
+    ModelConfig,
+    OptimizerConfig,
+    RebaseConfig,
+    TrainingConfig,
+)
 from gadir.data.loaders import build_data_bundle
 from gadir.utils.logging import get_logger
 from gadir.utils.results import write_markdown, write_metrics_json
@@ -32,6 +41,14 @@ DEFAULT_EXPERIMENTS = {
     "LoRA-GA": "roberta-base_MRPC_LoRA-GA多随机种子验证_A10",
     "GADI-R": "roberta-base_MRPC_GADI-R多随机种子验证_A10_query_only_top1_step120",
 }
+
+
+def _configure_hf_env() -> None:
+    os.environ.setdefault("HF_HOME", str(PROJECT_ROOT / ".cache" / "huggingface"))
+    hf_endpoint = os.environ.get("HF_ENDPOINT", "https://hf-mirror.com")
+    os.environ.setdefault("HF_ENDPOINT", hf_endpoint)
+    os.environ.setdefault("HF_HUB_ENDPOINT", hf_endpoint)
+    os.environ.setdefault("HF_HUB_DISABLE_TELEMETRY", "1")
 
 
 def _read_json(path: Path) -> dict[str, Any]:
@@ -59,10 +76,29 @@ def _load_adapter_model(checkpoint_dir: Path, config: ExperimentConfig) -> tuple
     if tokenizer.pad_token is None and tokenizer.eos_token is not None:
         tokenizer.pad_token = tokenizer.eos_token
 
-    base_model = AutoModelForSequenceClassification.from_pretrained(
-        config.model.model_name_or_path,
-        num_labels=config.model.num_labels,
-    )
+    load_kwargs = {
+        "num_labels": config.model.num_labels,
+    }
+
+    try:
+        LOGGER.info("Trying local-cache base model load first: %s", config.model.model_name_or_path)
+        base_model = AutoModelForSequenceClassification.from_pretrained(
+            config.model.model_name_or_path,
+            local_files_only=True,
+            **load_kwargs,
+        )
+    except Exception as exc:
+        LOGGER.warning(
+            "Local-cache load failed for %s, falling back to HF endpoint %s | reason=%s",
+            config.model.model_name_or_path,
+            os.environ.get("HF_ENDPOINT"),
+            exc,
+        )
+        base_model = AutoModelForSequenceClassification.from_pretrained(
+            config.model.model_name_or_path,
+            **load_kwargs,
+        )
+
     model = PeftModel.from_pretrained(base_model, checkpoint_dir)
     return model, tokenizer
 
@@ -181,8 +217,14 @@ def main() -> None:
     suite_dir = results_root / date_dir / args.suite_name
     suite_dir.mkdir(parents=True, exist_ok=True)
 
+    _configure_hf_env()
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    LOGGER.info("Starting MRPC F1 supplement evaluation on device=%s", device)
+    LOGGER.info(
+        "Starting MRPC F1 supplement evaluation on device=%s | HF_HOME=%s | HF_ENDPOINT=%s",
+        device,
+        os.environ.get("HF_HOME"),
+        os.environ.get("HF_ENDPOINT"),
+    )
 
     summary_rows: list[dict[str, Any]] = []
 
@@ -203,15 +245,16 @@ def main() -> None:
             data_bundle = build_data_bundle(config, tokenizer)
             metrics = _evaluate_with_f1(model, data_bundle.eval_loader, device)
 
-            record = {
-                "method": method_name,
-                "seed": config.seed,
-                "loss": metrics["loss"],
-                "accuracy": metrics["accuracy"],
-                "f1": metrics["f1"],
-                "path": str(run_dir),
-            }
-            summary_rows.append(record)
+            summary_rows.append(
+                {
+                    "method": method_name,
+                    "seed": config.seed,
+                    "loss": metrics["loss"],
+                    "accuracy": metrics["accuracy"],
+                    "f1": metrics["f1"],
+                    "path": str(run_dir),
+                }
+            )
 
     summary_rows.sort(key=lambda item: (item["method"], item["seed"]))
 
