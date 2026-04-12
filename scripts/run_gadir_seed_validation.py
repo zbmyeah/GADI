@@ -78,26 +78,6 @@ def build_seed_config(
     cfg.training.num_epochs = num_epochs
     cfg.training.max_steps = None
     cfg.training.train_batch_size = train_batch_size
-    cfg.training.eval_batch_size = 32
-    cfg.training.gradient_accumulation_steps = 1
-    cfg.training.log_every_steps = 20
-    cfg.training.eval_every_steps = 40
-
-    cfg.data.calibration_size = 32
-    cfg.lora_ga.calibration_batches = 1
-
-    cfg.rebase.enabled = True
-    cfg.rebase.interval_steps = 120
-    cfg.rebase.warmup_steps = 120
-    cfg.rebase.max_rebases = 1
-    cfg.rebase.drift_threshold = 0.03
-    cfg.rebase.topk_layers = 2
-    cfg.rebase.selection_strategy = "global_topk"
-    cfg.rebase.calibration_batches = 4
-    cfg.rebase.use_residual_gradient = True
-    cfg.rebase.gradient_mix = 0.5
-    cfg.rebase.calibration_eval_mode = True
-    cfg.rebase.reset_optimizer_state = False
     return cfg
 
 
@@ -146,7 +126,7 @@ def build_experiment_markdown(
 
 ## 一、实验目的
 
-本实验用于验证固定配置 `step120 + gradient_mix=0.5 + global_topk` 的 GADI-R 在不同随机种子下是否稳定，并观察它相对当前 LoRA / LoRA-GA 参考基线是否仍有优势。
+本实验用于验证固定配置 `step{config.rebase.interval_steps} + gradient_mix={config.rebase.gradient_mix} + {config.rebase.selection_strategy}` 的 GADI-R 在不同随机种子下是否稳定，并观察它相对当前 LoRA / LoRA-GA 参考基线是否仍有优势。
 
 ## 二、实验配置
 
@@ -205,6 +185,7 @@ def build_summary_markdown(
     suite_dir: Path,
     seeds: list[int],
     reference_rows: dict[str, dict[str, Any]],
+    config: ExperimentConfig,
 ) -> str:
     accuracies = [row["final_accuracy"] for row in summary_rows]
     losses = [row["final_loss"] for row in summary_rows]
@@ -221,7 +202,7 @@ def build_summary_markdown(
         "",
         "## 一、实验设置",
         "",
-        "- 固定配置：`step120 + gradient_mix=0.5 + global_topk + topk_layers=2`。",
+        f"- 固定配置：`step{config.rebase.interval_steps} + gradient_mix={config.rebase.gradient_mix} + {config.rebase.selection_strategy} + topk_layers={config.rebase.topk_layers}`。",
         "- 模型：`roberta-base`",
         "- 数据集：`GLUE/MRPC`",
         f"- 随机种子列表：`{', '.join(str(seed) for seed in seeds)}`",
@@ -235,12 +216,12 @@ def build_summary_markdown(
         "",
         "## 三、逐种子结果",
         "",
-        "| seed | 是否复用 | 最终 Accuracy | 最终 Loss | 最佳 Accuracy | 最佳步数 | 是否超过 LoRA | 是否超过 LoRA-GA | value 是否入选 |",
-        "| ---: | --- | ---: | ---: | ---: | ---: | --- | --- | --- |",
+        "| seed | 是否复用 | 最终 Accuracy | 最终 Loss | 最佳 Accuracy | 最佳步数 | 是否超过 LoRA | 是否超过 LoRA-GA | value 是否入选 | 刷新层 |",
+        "| ---: | --- | ---: | ---: | ---: | ---: | --- | --- | --- | --- |",
     ]
     for row in summary_rows:
         lines.append(
-            f"| {row['seed']} | {'是' if row['reused'] else '否'} | {row['final_accuracy']:.6f} | {row['final_loss']:.6f} | {row['best_accuracy']:.6f} | {row['best_step']} | {'是' if row['final_accuracy'] > lora_acc else '否'} | {'是' if row['final_accuracy'] > lora_ga_acc else '否'} | {'是' if row['value_selected'] else '否'} |"
+            f"| {row['seed']} | {'是' if row['reused'] else '否'} | {row['final_accuracy']:.6f} | {row['final_loss']:.6f} | {row['best_accuracy']:.6f} | {row['best_step']} | {'是' if row['final_accuracy'] > lora_acc else '否'} | {'是' if row['final_accuracy'] > lora_ga_acc else '否'} | {'是' if row['value_selected'] else '否'} | {row['refreshed_layers_text']} |"
         )
 
     lines.extend(
@@ -390,11 +371,11 @@ def main() -> None:
             predicate=lambda payload, seed=seed: (
                 payload.get("method") == "GADI-R"
                 and _get_seed(payload) == seed
-                and _get_rebase_cfg(payload).get("interval_steps") == 120
-                and _get_rebase_cfg(payload).get("warmup_steps") == 120
-                and _get_rebase_cfg(payload).get("topk_layers") == 2
-                and _get_rebase_cfg(payload).get("selection_strategy", "global_topk") == "global_topk"
-                and _get_gradient_mix(payload) == 0.5
+                and _get_rebase_cfg(payload).get("interval_steps") == base_config.rebase.interval_steps
+                and _get_rebase_cfg(payload).get("warmup_steps") == base_config.rebase.warmup_steps
+                and _get_rebase_cfg(payload).get("topk_layers") == base_config.rebase.topk_layers
+                and _get_rebase_cfg(payload).get("selection_strategy", "global_topk") == base_config.rebase.selection_strategy
+                and _get_gradient_mix(payload) == base_config.rebase.gradient_mix
                 and _get_training_cfg(payload).get("num_epochs") == args.epochs
                 and _get_training_cfg(payload).get("train_batch_size") == args.train_batch_size
             ),
@@ -494,7 +475,7 @@ def main() -> None:
 
     write_markdown(
         suite_dir / "对比总结.md",
-        build_summary_markdown(summary_rows, suite_dir, seeds, reference_rows),
+        build_summary_markdown(summary_rows, suite_dir, seeds, reference_rows, base_config),
     )
     LOGGER.info("Finished GADI-R multi-seed validation. Summary directory: %s", suite_dir)
 

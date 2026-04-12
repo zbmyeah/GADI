@@ -152,6 +152,16 @@ class DynamicRebaser:
         topk = max(1, self.config.rebase.topk_layers)
         if strategy == "global_topk":
             return sorted(candidates, key=lambda item: item.raw_score, reverse=True)[:topk]
+        if strategy == "query_only":
+            query_candidates = sorted(
+                [item for item in candidates if item.group_name == "query"],
+                key=lambda item: item.raw_score,
+                reverse=True,
+            )
+            if query_candidates:
+                return query_candidates[:topk]
+            self.logger.info("query_only selection found no query candidates, falling back to global_topk.")
+            return sorted(candidates, key=lambda item: item.raw_score, reverse=True)[:topk]
         if strategy == "module_normalized":
             max_by_group: dict[str, float] = {}
             for candidate in candidates:

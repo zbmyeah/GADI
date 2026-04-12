@@ -53,6 +53,12 @@ bash scripts/setup_aliyun_env.sh
 bash scripts/run_aliyun_gadir_seed_validation.sh
 ```
 
+For a query-only re-basing ablation on the same A10 server:
+
+```bash
+bash scripts/run_aliyun_gadir_query_only_seed_validation.sh
+```
+
 The helper script sets `PYTHONPATH`, a local Hugging Face cache directory, and runs the fixed best-known GADI-R setting:
 
 - `step120`
