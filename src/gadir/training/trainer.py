@@ -72,9 +72,11 @@ def run_training(config: ExperimentConfig) -> dict[str, float]:
         config.data.dataset_config_name,
     )
     logger.info("Loading model and tokenizer...")
+    # 加载模型、分词器
     model, tokenizer, target_modules = load_model_and_tokenizer(config.model)
     config.model.target_modules = target_modules
     logger.info("Loaded model. Building datasets and dataloaders...")
+    # 加载数据
     data_bundle = build_data_bundle(config, tokenizer)
     logger.info(
         "Data ready | train_batches=%s | eval_batches=%s | calibration_batches=%s",
@@ -85,6 +87,7 @@ def run_training(config: ExperimentConfig) -> dict[str, float]:
     method = build_method(config)
     model = method.wrap_model(model)
 
+    # 设备管理
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     if device.type == "cuda":
         torch.cuda.empty_cache()
@@ -119,6 +122,7 @@ def run_training(config: ExperimentConfig) -> dict[str, float]:
 
     init_start = time.perf_counter()
     logger.info("Initializing method-specific state...")
+    # 初始化训练方法
     method.initialize(
         model=model,
         calibration_batch_provider=calibration_batch_provider,
@@ -127,7 +131,7 @@ def run_training(config: ExperimentConfig) -> dict[str, float]:
     initialization_time = time.perf_counter() - init_start
     method.set_initialization_time(initialization_time)
     logger.info("Initialization finished in %.2f seconds.", initialization_time)
-
+    # 优化器
     optimizer = AdamW(
         (parameter for parameter in model.parameters() if parameter.requires_grad),
         lr=config.optimizer.learning_rate,

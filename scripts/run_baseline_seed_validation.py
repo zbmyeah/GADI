@@ -53,7 +53,7 @@ def _get_seed(payload: dict[str, Any]) -> int | None:
 def _get_training_cfg(payload: dict[str, Any]) -> dict[str, Any]:
     return payload.get("config", {}).get("training", {})
 
-
+# 查找结果目录下是否存在匹配的已经运行的实验结果，返回最新的
 def _find_existing_result(
     results_root: Path,
     *,
@@ -261,6 +261,7 @@ def main() -> None:
     summary_rows: list[dict[str, Any]] = []
 
     for seed in seeds:
+        # 判断是否已经运行过，避免重复进行实验
         existing_run = _find_existing_result(
             results_root,
             predicate=lambda payload, seed=seed: (
@@ -283,7 +284,7 @@ def main() -> None:
         if existing_run is not None:
             run_json_path, payload = existing_run
             LOGGER.info("Reusing existing %s seed=%s result: %s", method_name, seed, run_json_path.parent)
-            metrics = payload.get("metrics", {})
+            metrics = payload.get("metrics", {})    # 关键运行结果
             elapsed_seconds = float(payload.get("elapsed_seconds", 0.0))
             reused = True
             run_dir = run_json_path.parent
@@ -321,9 +322,10 @@ def main() -> None:
                 build_experiment_markdown(method_name, config, metrics, elapsed_seconds, run_dir),
             )
             reused = False
-
+        # 统计最小损失，最高精确度以及发生的迭代步骤
         best_loss, best_accuracy, best_step = summarize_history(metrics)
         runtime = metrics.get("runtime", {})
+        #各个随机种子对比CSV
         summary_rows.append(
             {
                 "seed": seed,
